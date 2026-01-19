@@ -1,12 +1,21 @@
-# Java
-target/
-*.jar
-*.war
-*.ear
+HELP.md
+# Compiled class file
 *.class
+
+# Log file
 *.log
 
+# Package Files #
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
 # Maven
+target/
 pom.xml.tag
 pom.xml.releaseBackup
 pom.xml.versionsBackup
@@ -14,35 +23,97 @@ pom.xml.next
 release.properties
 dependency-reduced-pom.xml
 buildNumber.properties
-.mvn/wrapper/maven-wrapper.jar
+.mvn/tmp/
 
-# IDE
-.idea/
-*.iml
-*.ipr
-*.iws
-.vscode/
-.settings/
+# Maven wrapper
+!.mvn/wrapper/maven-wrapper.jar
+
+# Gradle
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# Eclipse
 .classpath
 .project
+.settings/
+bin/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# VS Code
+.vscode/
+
+# Mac
+.DS_Store
+*.DS_Store
+
+# Windows
+Thumbs.db
+
+# Linux
+*~
+
+# Application Properties and YAML files
+application*.properties
+application*.yml
+application*.yaml
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Spring Boot
+spring-boot-devtools.properties
+
+# Unit test reports
+TEST*.xml
+
+# JaCoCo
+jacoco.exec
+jacoco-it.exec
+
+# Backup files
+*.bak
+
+# IDE
 *.swp
 *.swo
-.DS_Store
+*~
+.~lock.*#
+
+# Temp files
+tmp/
+temp/
 
 # Logs
 logs/
-!logs/.keep
+*.log
+!**/src/main/**/logs/
+!**/src/test/**/logs/
 
-# Environment
+### VS Code ###
+.vscode/
+
+### env ###
 .env
-.env.local
-.env*.local
 
-# Temp
-tmp/
-temp/
-*.tmp
-*.temp
-
-# System
-Thumbs.db
+.DS_Store
+*.DS_Store
