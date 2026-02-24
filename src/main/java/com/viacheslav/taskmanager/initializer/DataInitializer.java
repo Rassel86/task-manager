@@ -88,7 +88,6 @@ public class DataInitializer implements CommandLineRunner {
         User maria = findUserByUsername(users, "MeryDu");
         User petr = findUserByUsername(users, "petrov11");
 
-
         Project personalProject = Project.builder()
                 .name("Personal tasks")
                 .description("My personal affairs and purchases")
@@ -107,7 +106,8 @@ public class DataInitializer implements CommandLineRunner {
                 .owner(petr)
                 .build();
 
-        List<Project> savedProjects = projectRepository.saveAll(List.of(personalProject, teamProject, petrProject));
+        List<Project> savedProjects = projectRepository.saveAll(
+                List.of(personalProject, teamProject, petrProject));
         log.info("Created {} projects", savedProjects.size());
         return savedProjects;
     }
@@ -206,7 +206,8 @@ public class DataInitializer implements CommandLineRunner {
                 .task(testTask)
                 .build();
 
-        List<Comment> savedComments = commentRepository.saveAll(List.of(comment1, comment2, comment3, comment4));
+        List<Comment> savedComments = commentRepository.saveAll(
+                List.of(comment1, comment2, comment3, comment4));
         log.info("Created {} comments", savedComments.size());
     }
 

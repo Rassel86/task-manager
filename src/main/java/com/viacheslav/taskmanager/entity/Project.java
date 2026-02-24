@@ -2,7 +2,9 @@ package com.viacheslav.taskmanager.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,4 +31,8 @@ public class Project {
 
     @OneToMany(mappedBy = "project")
     private List<Task> tasks;
+
+    @Column(name = "created_at", updatable = false)
+    @CreationTimestamp
+    private ZonedDateTime createdAt;
 }

@@ -4,7 +4,10 @@ import com.viacheslav.taskmanager.entity.enums.TaskPriority;
 import com.viacheslav.taskmanager.entity.enums.TaskStatus;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -53,4 +56,15 @@ public class Task {
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private List<Comment> comments = new ArrayList<>();
+
+    @Column(name = "created_at", updatable = false)
+    @CreationTimestamp
+    private ZonedDateTime createdAt;
+
+    @Column(name = "updated_at")
+    @UpdateTimestamp
+    private ZonedDateTime updatedAt;
+
+    @Column(name = "deadline")
+    private ZonedDateTime deadline;
 }

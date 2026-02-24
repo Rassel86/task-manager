@@ -2,7 +2,10 @@ package com.viacheslav.taskmanager.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.ZonedDateTime;
 import java.util.UUID;
 
 @Entity
@@ -13,6 +16,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Comment {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
@@ -26,4 +30,12 @@ public class Comment {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id")
     private User author;
+
+    @Column(name = "created_at", updatable = false)
+    @CreationTimestamp
+    private ZonedDateTime createdAt;
+
+    @Column(name = "updated_at")
+    @UpdateTimestamp
+    private ZonedDateTime updatedAt;
 }

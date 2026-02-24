@@ -23,6 +23,6 @@ public class Tag {
 
     private String color;
 
-//    @OneToMany(mappedBy = "")
+    //    @OneToMany(mappedBy = "")
     private List<Task> tasks;
 }
