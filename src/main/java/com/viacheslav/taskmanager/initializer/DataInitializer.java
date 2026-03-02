@@ -1,22 +1,19 @@
 package com.viacheslav.taskmanager.initializer;
 
-import com.viacheslav.taskmanager.entity.Comment;
-import com.viacheslav.taskmanager.entity.Project;
-import com.viacheslav.taskmanager.entity.Task;
-import com.viacheslav.taskmanager.entity.User;
+import com.viacheslav.taskmanager.entity.*;
+import com.viacheslav.taskmanager.entity.enums.TagColor;
 import com.viacheslav.taskmanager.entity.enums.TaskPriority;
 import com.viacheslav.taskmanager.entity.enums.TaskStatus;
-import com.viacheslav.taskmanager.repository.CommentRepository;
-import com.viacheslav.taskmanager.repository.ProjectRepository;
-import com.viacheslav.taskmanager.repository.TaskRepository;
-import com.viacheslav.taskmanager.repository.UserRepository;
+import com.viacheslav.taskmanager.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @Component
@@ -28,6 +25,7 @@ public class DataInitializer implements CommandLineRunner {
     private final TaskRepository taskRepository;
     private final ProjectRepository projectRepository;
     private final CommentRepository commentRepository;
+    private final TagRepository tagRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -112,14 +110,32 @@ public class DataInitializer implements CommandLineRunner {
         return savedProjects;
     }
 
-    private List<Task> createTasks(List<Project> projects, List<User> users) {
+    private Set<Tag> createTags() {
+        log.info("Creating tags...");
+        Set<Tag> tags = Set.of(
+                Tag.builder().name("Feature").color(TagColor.PURPLE).build(),
+                Tag.builder().name("Urgent").color(TagColor.RED).build(),
+                Tag.builder().name("TestTag").build(),
+                Tag.builder().name("Bug").color(TagColor.BLUE).build()
+        );
+        List<Tag> savedTagsList = tagRepository.saveAll(tags);
+        log.info("Created {} tags", savedTagsList.size());
+        return new HashSet<>(savedTagsList);
+    }
 
+    private List<Task> createTasks(List<Project> projects, List<User> users) {
         User viacheslav = findUserByUsername(users, "rassel86rus");
         User maria = findUserByUsername(users, "MeryDu");
         User petr = findUserByUsername(users, "petrov11");
 
         Project personalProject = findProjectByName(projects, "Personal tasks");
         Project teamProject = findProjectByName(projects, "Task Manager Development");
+
+        Set<Tag> tags = createTags();
+        Tag featureTag = findTagByName(tags, "Feature");
+        Tag urgentTag = findTagByName(tags, "Urgent");
+        Tag testTag = findTagByName(tags, "TestTag");
+        Tag bugTag = findTagByName(tags, "Bug");
 
         Task task1 = Task.builder()
                 .title("Разработать API")
@@ -128,6 +144,7 @@ public class DataInitializer implements CommandLineRunner {
                 .priority(TaskPriority.HIGH)
                 .author(viacheslav)
                 .assignee(petr)
+                .tags(Set.of(bugTag, featureTag, urgentTag))
                 .project(teamProject)
                 .build();
 
@@ -138,6 +155,7 @@ public class DataInitializer implements CommandLineRunner {
                 .priority(TaskPriority.LOW)
                 .author(petr)
                 .assignee(maria)
+                .tags(Set.of(testTag, urgentTag))
                 .project(teamProject)
                 .build();
 
@@ -146,6 +164,7 @@ public class DataInitializer implements CommandLineRunner {
                 .description("Добавить описание новых эндпоинтов")
                 .author(viacheslav)
                 .assignee(null)
+                .tags(Set.of(featureTag))
                 .project(teamProject)
                 .build();
 
@@ -226,5 +245,12 @@ public class DataInitializer implements CommandLineRunner {
                 .orElseThrow(() -> new RuntimeException(
                         String.format("Project with name \"%s\" not found", name)
                 ));
+    }
+
+    private Tag findTagByName(Set<Tag> tags, String name) {
+        return tags.stream()
+                .filter(tag -> tag.getName().equals(name))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Tag not found: " + name));
     }
 }
