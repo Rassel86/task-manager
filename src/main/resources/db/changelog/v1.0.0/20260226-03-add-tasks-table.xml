@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <changeSet id="20260226-01-create-tasks-table" author="Viacheslav Iakovlev">
+        <comment>Create table tasks</comment>
+        <createTable tableName="tasks">
+            <column name="id" type="uuid">
+                <constraints nullable="false"
+                             primaryKey="true"
+                             primaryKeyName="pk_tasks"/>
+            </column>
+            <column name="title" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="varchar(2000)"/>
+            <column name="status" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="priority" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="author_id" type="uuid">
+                <constraints nullable="false"/>
+            </column>
+            <column name="assignee_id" type="uuid"/>
+            <column name="project_id" type="uuid">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP WITH TIMEZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP WITH TIMEZONE"/>
+            <column name="deadline" type="TIMESTAMP WITH TIMEZONE"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="20260226-02-add-foreign-key-for-tasks-table" author="Viacheslav Iakovlev">
+        <comment>Add foreign key constraints for tasks table</comment>
+        <addForeignKeyConstraint baseTableName="tasks"
+                                 baseColumnNames="author_id"
+                                 constraintName="fk_tasks_owner"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"
+                                 onDelete="RESTRICT"
+                                 onUpdate="CASCADE"/>
+        <addForeignKeyConstraint baseTableName="tasks"
+                                 baseColumnNames="project_id"
+                                 constraintName="fk_tasks_project"
+                                 referencedTableName="projects"
+                                 referencedColumnNames="id"
+                                 onDelete="CASCADE"
+                                 onUpdate="CASCADE"/>
+        <addForeignKeyConstraint baseTableName="tasks"
+                                 baseColumnNames="assignee_id"
+                                 constraintName="fk_tasks_assignee"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"
+                                 onDelete="SET NULL"
+                                 onUpdate="CASCADE"/>
+    </changeSet>
+
+</databaseChangeLog>

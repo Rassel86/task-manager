@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <include file="20260226-01-add-users-table.xml" relativeToChangelogFile="true"/>
+    <include file="20260226-02-add-projects-table.xml" relativeToChangelogFile="true"/>
+    <include file="20260226-03-add-tasks-table.xml" relativeToChangelogFile="true"/>
+    <include file="20260226-04-add-comments-table.xml" relativeToChangelogFile="true"/>
+    <include file="20260226-05-add-tags-table.xml" relativeToChangelogFile="true"/>
+    <include file="20260301-06-add-tasks-tags-table.xml" relativeToChangelogFile="true"/>
+
+</databaseChangeLog>

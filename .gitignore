@@ -115,5 +115,6 @@ logs/
 ### env ###
 .env
 
+/data
 .DS_Store
 *.DS_Store
