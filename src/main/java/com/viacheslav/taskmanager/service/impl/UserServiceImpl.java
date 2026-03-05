@@ -6,7 +6,7 @@ import com.viacheslav.taskmanager.dto.UserResponse;
 import com.viacheslav.taskmanager.dto.UserUpdateRequest;
 import com.viacheslav.taskmanager.entity.User;
 import com.viacheslav.taskmanager.exception.BusinessLogicException;
-import com.viacheslav.taskmanager.exception.UserNotFoundException;
+import com.viacheslav.taskmanager.exception.ResourceNotFoundException;
 import com.viacheslav.taskmanager.mapper.UserMapper;
 import com.viacheslav.taskmanager.repository.UserRepository;
 import com.viacheslav.taskmanager.service.UserService;
@@ -104,7 +104,7 @@ public class UserServiceImpl implements UserService {
 
     private User getUserEntityById(UUID id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException(
+                .orElseThrow(() -> new ResourceNotFoundException(
                         String.format("User with id=%s not found", id)));
     }
 
