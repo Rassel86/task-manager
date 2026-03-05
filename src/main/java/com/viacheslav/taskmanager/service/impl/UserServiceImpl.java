@@ -1,6 +1,7 @@
 package com.viacheslav.taskmanager.service.impl;
 
 import com.viacheslav.taskmanager.dto.UserCreateRequest;
+import com.viacheslav.taskmanager.dto.UserPatchRequest;
 import com.viacheslav.taskmanager.dto.UserResponse;
 import com.viacheslav.taskmanager.dto.UserUpdateRequest;
 import com.viacheslav.taskmanager.entity.User;
@@ -25,7 +26,7 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
 
     @Override
-    public UserResponse getUserById(String id) {
+    public UserResponse getUserById(UUID id) {
         User user = getUserEntityById(id);
         UserResponse response = userMapper.toUserResponse(user);
         log.info("Successfully retrieved user with ID: {}", response.id());
@@ -34,7 +35,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserResponse create(UserCreateRequest request) {
+    public UserResponse createUser(UserCreateRequest request) {
         validateUniqueUsername(request.username(), null);
         validateUniqueEmail(request.email(), null);
 
@@ -52,30 +53,57 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserResponse update(String id, UserUpdateRequest request) {
+    public UserResponse patchUser(UUID id, UserPatchRequest request) {
         User user = getUserEntityById(id);
 
         updateUsernameIfChanged(user, request.username());
         updateEmailIfChanged(user, request.email());
 
+        if (request.firstName() != null) {
+            user.setFirstName(request.firstName());
+        }
+
+        if (request.lastName() != null) {
+            user.setLastName(request.lastName());
+        }
+
+        User patchedUser = userRepository.save(user);
+        log.info("User updated successfully with id {}", patchedUser.getId());
+        return userMapper.toUserResponse(patchedUser);
+    }
+
+    @Override
+    @Transactional
+    public UserResponse updateUser(UUID id, UserUpdateRequest request) {
+        User user = getUserEntityById(id);
+
+        if (!request.username().equals(user.getUsername())) {
+            validateUniqueEmail(request.email(), id);
+        }
+
+        if (!request.email().equals(user.getEmail())) {
+            validateUniqueEmail(request.email(), id);
+        }
+
+        user.setUsername(request.username());
+        user.setEmail(request.email());
         user.setFirstName(request.firstName());
         user.setLastName(request.lastName());
 
         User updatedUser = userRepository.save(user);
-        log.info("User updated successfully with id {}", updatedUser.getId());
         return userMapper.toUserResponse(updatedUser);
     }
 
     @Override
     @Transactional
-    public void delete(String id) {
+    public void deleteUser(UUID id) {
         User user = getUserEntityById(id);
         userRepository.delete(user);
         log.info("User deleted successfully with username {}", user.getUsername());
     }
 
-    private User getUserEntityById(String id) {
-        return userRepository.findById(UUID.fromString(id))
+    private User getUserEntityById(UUID id) {
+        return userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(
                         String.format("User with id=%s not found", id)));
     }
