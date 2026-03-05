@@ -33,7 +33,7 @@ public class UserController {
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand()
+                .buildAndExpand(response.id())
                 .toUri();
         return ResponseEntity
                 .created(location)
