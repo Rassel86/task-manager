@@ -17,4 +17,30 @@ import java.util.UUID;
 public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectRepository projectRepository;
+
+    @Override
+    public ProjectResponse getByUserId(UUID userId) {
+
+        return null;
+    }
+
+    @Override
+    public ProjectResponse createProject(UUID userId, ProjectCreateRequest request) {
+        return null;
+    }
+
+    @Override
+    public ProjectResponse updateProject(UUID userId, UUID projectId, ProjectUpdateRequest request) {
+        return null;
+    }
+
+    @Override
+    public ProjectResponse patchProject(UUID userId, UUID projectId, ProjectUpdateRequest request) {
+        return null;
+    }
+
+    @Override
+    public void deleteProject(UUID id) {
+
+    }
 }
