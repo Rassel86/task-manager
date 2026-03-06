@@ -110,7 +110,7 @@ public class UserServiceImpl implements UserService {
 
     private void validateUniqueUsername(String username, UUID id) {
         boolean exists = id == null
-                ? userRepository.existsByEmail(username)
+                ? userRepository.existsByUsername(username)
                 : userRepository.existsByUsernameAndIdNot(username, id);
         if (exists) {
             throw new BusinessLogicException(

@@ -5,12 +5,13 @@ import com.viacheslav.taskmanager.dto.ProjectResponse;
 import com.viacheslav.taskmanager.dto.ProjectUpdateRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
 public interface ProjectService {
 
-    ProjectResponse getByUserId(UUID userId);
+    List<ProjectResponse> getUserProjects(UUID userId);
 
     ProjectResponse createProject(UUID userId, ProjectCreateRequest request);
 
