@@ -3,6 +3,7 @@ package com.viacheslav.taskmanager.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -37,4 +38,8 @@ public class Project {
     @Column(name = "created_at", nullable = false, updatable = false)
     @CreationTimestamp
     private ZonedDateTime createdAt;
+
+    @Column(name = "updated_at")
+    @UpdateTimestamp
+    private ZonedDateTime updatedAt;
 }
