@@ -1,9 +1,9 @@
 package com.viacheslav.taskmanager.service.impl;
 
-import com.viacheslav.taskmanager.dto.UserCreateRequest;
-import com.viacheslav.taskmanager.dto.UserPatchRequest;
-import com.viacheslav.taskmanager.dto.UserResponse;
-import com.viacheslav.taskmanager.dto.UserUpdateRequest;
+import com.viacheslav.taskmanager.dto.user.UserCreateRequest;
+import com.viacheslav.taskmanager.dto.user.UserPatchRequest;
+import com.viacheslav.taskmanager.dto.user.UserResponse;
+import com.viacheslav.taskmanager.dto.user.UserUpdateRequest;
 import com.viacheslav.taskmanager.entity.User;
 import com.viacheslav.taskmanager.exception.BusinessLogicException;
 import com.viacheslav.taskmanager.exception.ResourceNotFoundException;

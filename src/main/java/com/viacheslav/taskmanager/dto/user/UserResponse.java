@@ -1,4 +1,4 @@
-package com.viacheslav.taskmanager.dto;
+package com.viacheslav.taskmanager.dto.user;
 
 import lombok.Builder;
 

@@ -1,8 +1,8 @@
 package com.viacheslav.taskmanager.service.impl;
 
-import com.viacheslav.taskmanager.dto.ProjectCreateRequest;
-import com.viacheslav.taskmanager.dto.ProjectResponse;
-import com.viacheslav.taskmanager.dto.ProjectUpdateRequest;
+import com.viacheslav.taskmanager.dto.project.ProjectCreateRequest;
+import com.viacheslav.taskmanager.dto.project.ProjectResponse;
+import com.viacheslav.taskmanager.dto.project.ProjectUpdateRequest;
 import com.viacheslav.taskmanager.entity.Project;
 import com.viacheslav.taskmanager.entity.User;
 import com.viacheslav.taskmanager.exception.AccessDeniedException;

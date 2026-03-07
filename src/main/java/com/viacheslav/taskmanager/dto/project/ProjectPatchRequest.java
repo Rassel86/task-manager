@@ -1,9 +1,9 @@
-package com.viacheslav.taskmanager.dto;
+package com.viacheslav.taskmanager.dto.project;
 
 import lombok.Builder;
 
 @Builder
-public record ProjectUpdateRequest(
+public record ProjectPatchRequest(
         String name,
         String description
 ) {
