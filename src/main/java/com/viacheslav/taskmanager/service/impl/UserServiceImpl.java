@@ -99,7 +99,7 @@ public class UserServiceImpl implements UserService {
     public void deleteUser(UUID id) {
         User user = getUserEntityById(id);
         userRepository.delete(user);
-        log.info("User deleted successfully with username {}", user.getUsername());
+        log.info("User deleted successfully with id={}", id);
     }
 
     private User getUserEntityById(UUID id) {

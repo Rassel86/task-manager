@@ -13,11 +13,11 @@ public interface ProjectService {
 
     List<ProjectResponse> getUserProjects(UUID userId);
 
-    ProjectResponse createProject(UUID userId, ProjectCreateRequest request);
+    ProjectResponse createProject(ProjectCreateRequest request);
 
-    ProjectResponse updateProject(UUID userId, UUID projectId, ProjectUpdateRequest request);
+    ProjectResponse updateProject(UUID id, ProjectUpdateRequest request);
 
-    ProjectResponse patchProject(UUID userId, UUID projectId, ProjectUpdateRequest request);
+    ProjectResponse patchProject(UUID id, ProjectUpdateRequest request);
 
     void deleteProject(UUID id);
 }
