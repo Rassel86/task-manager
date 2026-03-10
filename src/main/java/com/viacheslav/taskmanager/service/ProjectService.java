@@ -1,6 +1,7 @@
 package com.viacheslav.taskmanager.service;
 
 import com.viacheslav.taskmanager.dto.project.ProjectCreateRequest;
+import com.viacheslav.taskmanager.dto.project.ProjectPatchRequest;
 import com.viacheslav.taskmanager.dto.project.ProjectResponse;
 import com.viacheslav.taskmanager.dto.project.ProjectUpdateRequest;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,7 @@ public interface ProjectService {
 
     ProjectResponse updateProject(UUID id, ProjectUpdateRequest request);
 
-    ProjectResponse patchProject(UUID id, ProjectUpdateRequest request);
+    ProjectResponse patchProject(UUID id, ProjectPatchRequest request);
 
     void deleteProject(UUID id);
 }

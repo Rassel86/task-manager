@@ -1,6 +1,7 @@
 package com.viacheslav.taskmanager.service.impl;
 
 import com.viacheslav.taskmanager.dto.project.ProjectCreateRequest;
+import com.viacheslav.taskmanager.dto.project.ProjectPatchRequest;
 import com.viacheslav.taskmanager.dto.project.ProjectResponse;
 import com.viacheslav.taskmanager.dto.project.ProjectUpdateRequest;
 import com.viacheslav.taskmanager.entity.Project;
@@ -76,7 +77,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     @Transactional
-    public ProjectResponse patchProject(UUID id, ProjectUpdateRequest request) {
+    public ProjectResponse patchProject(UUID id, ProjectPatchRequest request) {
         UUID currentUserId = currentUserService.getCurrentUserId();
 
         Project project = findProjectById(id);

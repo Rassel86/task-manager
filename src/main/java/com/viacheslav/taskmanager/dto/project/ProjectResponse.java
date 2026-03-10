@@ -1,5 +1,6 @@
 package com.viacheslav.taskmanager.dto.project;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 
 import java.time.ZonedDateTime;
@@ -11,7 +12,9 @@ public record ProjectResponse(
         String name,
         String description,
         UUID ownerId,
-        ZonedDateTime createAt,
+        @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'", timezone = "UTC")
+        ZonedDateTime createdAt,
+        @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'", timezone = "UTC")
         ZonedDateTime updatedAt
 ) {
 }
