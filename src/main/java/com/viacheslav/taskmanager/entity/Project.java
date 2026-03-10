@@ -2,7 +2,10 @@ package com.viacheslav.taskmanager.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -10,6 +13,8 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "projects")
+@EntityListeners(AuditingEntityListener.class)
+@DynamicUpdate
 @Getter
 @Setter
 @Builder
@@ -35,6 +40,10 @@ public class Project {
     private List<Task> tasks;
 
     @Column(name = "created_at", nullable = false, updatable = false)
-    @CreationTimestamp
+    @CreatedDate
     private ZonedDateTime createdAt;
+
+    @Column(name = "updated_at")
+    @LastModifiedDate
+    private ZonedDateTime updatedAt;
 }

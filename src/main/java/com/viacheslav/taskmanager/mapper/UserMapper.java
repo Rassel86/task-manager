@@ -1,6 +1,6 @@
 package com.viacheslav.taskmanager.mapper;
 
-import com.viacheslav.taskmanager.dto.UserResponse;
+import com.viacheslav.taskmanager.dto.user.UserResponse;
 import com.viacheslav.taskmanager.entity.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;

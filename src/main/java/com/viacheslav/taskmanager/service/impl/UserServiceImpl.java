@@ -1,9 +1,9 @@
 package com.viacheslav.taskmanager.service.impl;
 
-import com.viacheslav.taskmanager.dto.UserCreateRequest;
-import com.viacheslav.taskmanager.dto.UserPatchRequest;
-import com.viacheslav.taskmanager.dto.UserResponse;
-import com.viacheslav.taskmanager.dto.UserUpdateRequest;
+import com.viacheslav.taskmanager.dto.user.UserCreateRequest;
+import com.viacheslav.taskmanager.dto.user.UserPatchRequest;
+import com.viacheslav.taskmanager.dto.user.UserResponse;
+import com.viacheslav.taskmanager.dto.user.UserUpdateRequest;
 import com.viacheslav.taskmanager.entity.User;
 import com.viacheslav.taskmanager.exception.BusinessLogicException;
 import com.viacheslav.taskmanager.exception.ResourceNotFoundException;
@@ -99,7 +99,7 @@ public class UserServiceImpl implements UserService {
     public void deleteUser(UUID id) {
         User user = getUserEntityById(id);
         userRepository.delete(user);
-        log.info("User deleted successfully with username {}", user.getUsername());
+        log.info("User deleted successfully with id={}", id);
     }
 
     private User getUserEntityById(UUID id) {
@@ -110,7 +110,7 @@ public class UserServiceImpl implements UserService {
 
     private void validateUniqueUsername(String username, UUID id) {
         boolean exists = id == null
-                ? userRepository.existsByEmail(username)
+                ? userRepository.existsByUsername(username)
                 : userRepository.existsByUsernameAndIdNot(username, id);
         if (exists) {
             throw new BusinessLogicException(

@@ -35,6 +35,9 @@ public class User {
     @Column(unique = true, nullable = false, length = 100)
     private String email;
 
+    @OneToMany(mappedBy = "owner")
+    List<Project> projects = new ArrayList<>();
+
     @Builder.Default
     @OneToMany(mappedBy = "author")
     private List<Task> createdTasks = new ArrayList<>();
