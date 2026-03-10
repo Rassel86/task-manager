@@ -64,6 +64,8 @@ public class ProjectServiceImpl implements ProjectService {
 
         Project project = findProjectById(id);
 
+        log.info("BEFORE - updatedAt: {}", project.getUpdatedAt());
+
         if (!currentUserId.equals(project.getOwner().getId())) {
             throw new AccessDeniedException("You don't have permission to modify this project");
         }
@@ -71,8 +73,9 @@ public class ProjectServiceImpl implements ProjectService {
         project.setName(request.name());
         project.setDescription(request.description());
 
-        Project updatedProject = projectRepository.save(project);
-        return projectMapper.toProjectResponse(updatedProject);
+        projectRepository.flush();
+        log.info("AFTER FLUSH - updatedAt: {}", project.getUpdatedAt());
+        return projectMapper.toProjectResponse(project);
     }
 
     @Override
@@ -81,6 +84,8 @@ public class ProjectServiceImpl implements ProjectService {
         UUID currentUserId = currentUserService.getCurrentUserId();
 
         Project project = findProjectById(id);
+
+        log.info("BEFORE - updatedAt: {}", project.getUpdatedAt());
 
         if (!currentUserId.equals(project.getOwner().getId())) {
             throw new AccessDeniedException("You don't have permission to modify this project");
@@ -94,8 +99,10 @@ public class ProjectServiceImpl implements ProjectService {
             project.setDescription(request.description());
         }
 
-        Project patchedProject = projectRepository.save(project);
-        return projectMapper.toProjectResponse(patchedProject);
+        projectRepository.flush();
+
+        log.info("AFTER FLUSH - updatedAt: {}", project.getUpdatedAt());
+        return projectMapper.toProjectResponse(project);
     }
 
     @Override
