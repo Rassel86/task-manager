@@ -12,5 +12,6 @@
     <include file="20260226-05-add-tags-table.xml" relativeToChangelogFile="true"/>
     <include file="20260301-06-add-tasks-tags-table.xml" relativeToChangelogFile="true"/>
     <include file="20260306-07-add-created-at-field.xml" relativeToChangelogFile="true"/>
+    <include file="20260317-08-add-columns-password-role-created-updated-to-users.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

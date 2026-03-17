@@ -1,8 +1,12 @@
 package com.viacheslav.taskmanager.entity;
 
+import com.viacheslav.taskmanager.entity.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -20,8 +24,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-//    @Column(nullable = false)
-//    private String passwordHash;
+    @Column(nullable = false, length = 68)
+    private String passwordHash;
 
     @Column(name = "first_name", nullable = false, length = 50)
     private String firstName;
@@ -34,6 +38,19 @@ public class User {
 
     @Column(unique = true, nullable = false, length = 100)
     private String email;
+
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private UserRole role = UserRole.USER;
+
+    @Column(name = "created_at", nullable = false, updatable = false)
+    @CreatedDate
+    private ZonedDateTime created_at;
+
+    @Column(name = "updated_at")
+    @LastModifiedDate
+    private ZonedDateTime updated_at;
 
     @OneToMany(mappedBy = "owner")
     List<Project> projects = new ArrayList<>();
