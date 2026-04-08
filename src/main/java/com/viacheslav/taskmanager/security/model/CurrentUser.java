@@ -1,4 +1,4 @@
-package com.viacheslav.taskmanager.security;
+package com.viacheslav.taskmanager.security.model;
 
 import com.viacheslav.taskmanager.entity.User;
 import lombok.Getter;
@@ -9,16 +9,17 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @RequiredArgsConstructor
-public class SecurityUser implements UserDetails {
+public class CurrentUser implements UserDetails {
 
     private final User user;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(user.getRole().name()));
+        return List.of(new SimpleGrantedAuthority(user.getRole().getAuthority()));
     }
 
     @Override
@@ -48,6 +49,10 @@ public class SecurityUser implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return user.isEnabled();
+    }
+
+    public UUID getId() {
+        return user.getId();
     }
 }

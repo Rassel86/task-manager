@@ -13,5 +13,8 @@
     <include file="20260301-06-add-tasks-tags-table.xml" relativeToChangelogFile="true"/>
     <include file="20260306-07-add-created-at-field.xml" relativeToChangelogFile="true"/>
     <include file="20260317-08-add-columns-password-role-created-updated-to-users.xml" relativeToChangelogFile="true"/>
+    <include file="20260318-09-delete-nullable-constraint-firstname-lastname-in-users.xml" relativeToChangelogFile="true"/>
+    <include file="20260331-10-add-case-insensitive-index-to-users.xml" relativeToChangelogFile="true"/>
+    <include file="20260402-11-add-column-enabled-to-users.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

@@ -9,13 +9,11 @@ import lombok.Builder;
 @Builder
 public record UserCreateRequest(
 
-        @NotBlank(message = "First name is required")
         @Size(max = 50, message = "First name cannot exceed {max} characters")
         @Pattern(regexp = "^[A-Za-z\\-]+$",
                 message = "First name can only contain letters and hyphens (e.g., Anna-Maria)")
         String firstName,
 
-        @NotBlank(message = "Last name is required")
         @Size(max = 50, message = "Last name cannot exceed {max} characters")
         @Pattern(regexp = "^[A-Za-z\\-]+$",
                 message = "Last name can only contain letters and hyphens (e.g., Smith-Jones)")
@@ -29,7 +27,11 @@ public record UserCreateRequest(
 
         @NotBlank(message = "Email is required")
         @Size(max = 100, message = "Email is too long")
-        @Email(message = "Please provide a valid email address")
-        String email
+        @Email(regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\\\.[A-Za-z]{2,}$",
+                message = "Please provide a valid email address")
+        String email,
+
+        @NotBlank
+        String password
 ) {
 }

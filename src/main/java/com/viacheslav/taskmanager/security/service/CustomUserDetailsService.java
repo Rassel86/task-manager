@@ -1,6 +1,7 @@
-package com.viacheslav.taskmanager.security;
+package com.viacheslav.taskmanager.security.service;
 
 import com.viacheslav.taskmanager.repository.UserRepository;
+import com.viacheslav.taskmanager.security.model.CurrentUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,7 +17,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         return userRepository.findByEmail(email)
-                .map(SecurityUser::new)
+                .map(CurrentUser::new)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 }

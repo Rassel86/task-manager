@@ -1,12 +1,13 @@
 package com.viacheslav.taskmanager.dto.user;
 
+import com.viacheslav.taskmanager.entity.enums.UserRole;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
 
 @Builder
-public record UserPatchRequest(
+public record UserUpdateByAdminRequest (
 
         @Size(max = 50, message = "First name cannot exceed {max} characters")
         @Pattern(regexp = "^[A-Za-z\\-]+$",
@@ -24,7 +25,10 @@ public record UserPatchRequest(
         String username,
 
         @Size(max = 100, message = "Email is too long")
-        @Email(message = "Please provide a valid email address")
-        String email
+        @Email(regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\\\.[A-Za-z]{2,}$",
+                message = "Please provide a valid email address")
+        String email,
+        UserRole role,
+        Boolean enabled
 ) {
 }
