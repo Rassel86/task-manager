@@ -21,14 +21,12 @@ public interface UserService {
 
     void changePassword(User user, ChangePasswordRequest request);
 
-    //Registration
     UserResponse createRegisteredUser(UserCreateRequest request);
 
     User findByUsernameOrEmail(String usernameOrEmail);
 
     UserResponse getByEmail(String email);
 
-    //For Admin methods
     UserResponse createUserByAdmin(UserCreateRequest request);
 
     void resetPasswordByAdmin(UUID id, String newPassword);
