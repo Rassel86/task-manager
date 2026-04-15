@@ -1,9 +1,9 @@
 package com.viacheslav.taskmanager.controller;
 
-import com.viacheslav.taskmanager.dto.auth.ChangePasswordRequest;
-import com.viacheslav.taskmanager.dto.auth.SuccessResponse;
-import com.viacheslav.taskmanager.dto.user.UserResponse;
-import com.viacheslav.taskmanager.dto.user.UserUpdateRequest;
+import com.viacheslav.taskmanager.model.dto.auth.ChangePasswordRequest;
+import com.viacheslav.taskmanager.model.dto.auth.SuccessResponse;
+import com.viacheslav.taskmanager.model.dto.user.UserResponse;
+import com.viacheslav.taskmanager.model.dto.user.UserUpdateRequest;
 import com.viacheslav.taskmanager.security.model.CurrentUser;
 import com.viacheslav.taskmanager.service.UserService;
 import jakarta.validation.Valid;

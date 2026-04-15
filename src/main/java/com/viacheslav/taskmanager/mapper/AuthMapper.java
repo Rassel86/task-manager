@@ -1,7 +1,7 @@
 package com.viacheslav.taskmanager.mapper;
 
-import com.viacheslav.taskmanager.dto.auth.RegisterRequest;
-import com.viacheslav.taskmanager.dto.user.UserCreateRequest;
+import com.viacheslav.taskmanager.model.dto.auth.RegisterRequest;
+import com.viacheslav.taskmanager.model.dto.user.UserCreateRequest;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;

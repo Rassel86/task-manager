@@ -1,7 +1,7 @@
 package com.viacheslav.taskmanager.mapper;
 
-import com.viacheslav.taskmanager.dto.auth.RegisterRequest;
-import com.viacheslav.taskmanager.dto.user.UserCreateRequest;
+import com.viacheslav.taskmanager.model.dto.auth.RegisterRequest;
+import com.viacheslav.taskmanager.model.dto.user.UserCreateRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -1,9 +1,9 @@
 package com.viacheslav.taskmanager.controller;
 
-import com.viacheslav.taskmanager.dto.project.ProjectCreateRequest;
-import com.viacheslav.taskmanager.dto.project.ProjectPatchRequest;
-import com.viacheslav.taskmanager.dto.project.ProjectResponse;
-import com.viacheslav.taskmanager.dto.project.ProjectUpdateRequest;
+import com.viacheslav.taskmanager.model.dto.project.ProjectCreateRequest;
+import com.viacheslav.taskmanager.model.dto.project.ProjectPatchRequest;
+import com.viacheslav.taskmanager.model.dto.project.ProjectResponse;
+import com.viacheslav.taskmanager.model.dto.project.ProjectUpdateRequest;
 import com.viacheslav.taskmanager.service.ProjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

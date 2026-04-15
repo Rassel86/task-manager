@@ -1,6 +1,6 @@
 package com.viacheslav.taskmanager.repository;
 
-import com.viacheslav.taskmanager.entity.Project;
+import com.viacheslav.taskmanager.model.Project;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

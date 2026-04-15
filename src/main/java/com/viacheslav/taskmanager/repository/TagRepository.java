@@ -1,6 +1,6 @@
 package com.viacheslav.taskmanager.repository;
 
-import com.viacheslav.taskmanager.entity.Tag;
+import com.viacheslav.taskmanager.model.Tag;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;

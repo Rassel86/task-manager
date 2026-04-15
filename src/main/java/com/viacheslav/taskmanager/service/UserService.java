@@ -1,9 +1,9 @@
 package com.viacheslav.taskmanager.service;
 
-import com.viacheslav.taskmanager.dto.PageResponse;
-import com.viacheslav.taskmanager.dto.auth.ChangePasswordRequest;
-import com.viacheslav.taskmanager.dto.user.*;
-import com.viacheslav.taskmanager.entity.User;
+import com.viacheslav.taskmanager.model.User;
+import com.viacheslav.taskmanager.model.dto.PageResponse;
+import com.viacheslav.taskmanager.model.dto.auth.ChangePasswordRequest;
+import com.viacheslav.taskmanager.model.dto.user.*;
 
 import java.util.UUID;
 
@@ -18,6 +18,8 @@ public interface UserService {
     UserResponse updateUser(User user, UserUpdateRequest request);
 
     void deleteUser(UUID id);
+
+    void deleteUserByAdmin(UUID id);
 
     void changePassword(User user, ChangePasswordRequest request);
 

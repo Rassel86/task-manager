@@ -1,6 +1,6 @@
 package com.viacheslav.taskmanager.security.model;
 
-import com.viacheslav.taskmanager.entity.User;
+import com.viacheslav.taskmanager.model.User;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;

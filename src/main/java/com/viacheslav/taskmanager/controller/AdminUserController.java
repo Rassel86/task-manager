@@ -1,14 +1,15 @@
 package com.viacheslav.taskmanager.controller;
 
-import com.viacheslav.taskmanager.dto.PageResponse;
-import com.viacheslav.taskmanager.dto.auth.SuccessResponse;
-import com.viacheslav.taskmanager.dto.user.ResetPasswordRequest;
-import com.viacheslav.taskmanager.dto.user.UserFilterRequest;
-import com.viacheslav.taskmanager.dto.user.UserResponse;
-import com.viacheslav.taskmanager.dto.user.UserUpdateByAdminRequest;
+import com.viacheslav.taskmanager.model.dto.PageResponse;
+import com.viacheslav.taskmanager.model.dto.auth.SuccessResponse;
+import com.viacheslav.taskmanager.model.dto.user.ResetPasswordRequest;
+import com.viacheslav.taskmanager.model.dto.user.UserFilterRequest;
+import com.viacheslav.taskmanager.model.dto.user.UserResponse;
+import com.viacheslav.taskmanager.model.dto.user.UserUpdateByAdminRequest;
 import com.viacheslav.taskmanager.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/v1/admin/users")
 @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR')")
@@ -26,8 +28,8 @@ public class AdminUserController {
     private final UserService userService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserResponse> getUser(@PathVariable UUID id) {
-        UserResponse userResponse = userService.getUserById(id);
+    public ResponseEntity<UserResponse> getUser(@PathVariable("id") UUID userId) {
+        UserResponse userResponse = userService.getUserById(userId);
         return ResponseEntity.ok(userResponse);
     }
 
@@ -35,11 +37,6 @@ public class AdminUserController {
     public ResponseEntity<PageResponse<UserResponse>> getUsersPage(@ModelAttribute UserFilterRequest filter) {
         PageResponse<UserResponse> response = userService.getUsersPage(filter);
         return ResponseEntity.ok(response);
-    }
-
-    @GetMapping("/search")
-    public ResponseEntity<String> searchUser() {
-        return null;
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -82,7 +79,7 @@ public class AdminUserController {
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteUser(@PathVariable UUID id) {
-        userService.deleteUser(id);
+    public void deleteUser(@PathVariable("id") UUID userId) {
+        userService.deleteUserByAdmin(userId);
     }
 }

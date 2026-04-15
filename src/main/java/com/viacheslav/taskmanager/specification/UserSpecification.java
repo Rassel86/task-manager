@@ -1,7 +1,7 @@
 package com.viacheslav.taskmanager.specification;
 
-import com.viacheslav.taskmanager.dto.user.UserFilterRequest;
-import com.viacheslav.taskmanager.entity.User;
+import com.viacheslav.taskmanager.model.dto.user.UserFilterRequest;
+import com.viacheslav.taskmanager.model.User;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;

@@ -1,10 +1,10 @@
 package com.viacheslav.taskmanager.initializer;
 
-import com.viacheslav.taskmanager.entity.*;
-import com.viacheslav.taskmanager.entity.enums.TagColor;
-import com.viacheslav.taskmanager.entity.enums.TaskPriority;
-import com.viacheslav.taskmanager.entity.enums.TaskStatus;
-import com.viacheslav.taskmanager.entity.enums.UserRole;
+import com.viacheslav.taskmanager.model.*;
+import com.viacheslav.taskmanager.model.enums.TagColor;
+import com.viacheslav.taskmanager.model.enums.TaskPriority;
+import com.viacheslav.taskmanager.model.enums.TaskStatus;
+import com.viacheslav.taskmanager.model.enums.UserRole;
 import com.viacheslav.taskmanager.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -60,6 +60,16 @@ public class DataInitializer implements CommandLineRunner {
                 .createdAt(ZonedDateTime.now().minusDays(7))
                 .build();
 
+        User user5 = User.builder()
+                .email("secondAmin@mail.ru")
+                .firstName("Admin")
+                .lastName("Second")
+                .username("Admin2")
+                .role(UserRole.ADMIN)
+                .passwordHash(passwordEncoder.encode("Second123!"))
+                .createdAt(ZonedDateTime.now().minusDays(6))
+                .build();
+
         User user2 = User.builder()
                 .email("petr@mail.ru")
                 .firstName("Petr")
@@ -87,7 +97,7 @@ public class DataInitializer implements CommandLineRunner {
                 .createdAt(ZonedDateTime.now())
                 .build();
 
-        List<User> savedUsers = userRepository.saveAll(List.of(user1, user2, user3, user4));
+        List<User> savedUsers = userRepository.saveAll(List.of(user1, user2, user3, user4, user5));
         log.info("Created {} users", savedUsers.size());
         return savedUsers;
     }

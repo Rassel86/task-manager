@@ -1,9 +1,9 @@
 package com.viacheslav.taskmanager.controller;
 
-import com.viacheslav.taskmanager.dto.auth.AuthResponse;
-import com.viacheslav.taskmanager.dto.auth.LoginRequest;
-import com.viacheslav.taskmanager.dto.auth.RegisterRequest;
-import com.viacheslav.taskmanager.dto.user.UserResponse;
+import com.viacheslav.taskmanager.model.dto.auth.AuthResponse;
+import com.viacheslav.taskmanager.model.dto.auth.LoginRequest;
+import com.viacheslav.taskmanager.model.dto.auth.RegisterRequest;
+import com.viacheslav.taskmanager.model.dto.user.UserResponse;
 import com.viacheslav.taskmanager.exception.InvalidTokenException;
 import com.viacheslav.taskmanager.service.AuthService;
 import jakarta.validation.Valid;
@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
+@CrossOrigin(origins = {"http://127.0.0.1:5500", "http://localhost:5500"})
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
@@ -46,7 +47,6 @@ public class AuthController {
 
         String refreshToken = authorizationHeader.substring(7);
         AuthResponse response = authService.refreshToken(refreshToken);
-        log.info("Received refresh token request");
         return ResponseEntity
                 .ok(response);
     }

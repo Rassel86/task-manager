@@ -1,6 +1,6 @@
 package com.viacheslav.taskmanager.service.impl;
 
-import com.viacheslav.taskmanager.entity.User;
+import com.viacheslav.taskmanager.model.User;
 import com.viacheslav.taskmanager.repository.UserRepository;
 import com.viacheslav.taskmanager.service.CurrentUserService;
 import lombok.RequiredArgsConstructor;
