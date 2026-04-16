@@ -1,7 +1,7 @@
 package com.viacheslav.taskmanager.mapper;
 
-import com.viacheslav.taskmanager.dto.project.ProjectResponse;
-import com.viacheslav.taskmanager.entity.Project;
+import com.viacheslav.taskmanager.model.dto.project.ProjectResponse;
+import com.viacheslav.taskmanager.model.Project;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;

@@ -1,6 +1,6 @@
 package com.viacheslav.taskmanager.service;
 
-import com.viacheslav.taskmanager.entity.User;
+import com.viacheslav.taskmanager.model.User;
 
 import java.util.UUID;
 

@@ -1,16 +1,19 @@
 package com.viacheslav.taskmanager.initializer;
 
-import com.viacheslav.taskmanager.entity.*;
-import com.viacheslav.taskmanager.entity.enums.TagColor;
-import com.viacheslav.taskmanager.entity.enums.TaskPriority;
-import com.viacheslav.taskmanager.entity.enums.TaskStatus;
+import com.viacheslav.taskmanager.model.*;
+import com.viacheslav.taskmanager.model.enums.TagColor;
+import com.viacheslav.taskmanager.model.enums.TaskPriority;
+import com.viacheslav.taskmanager.model.enums.TaskStatus;
+import com.viacheslav.taskmanager.model.enums.UserRole;
 import com.viacheslav.taskmanager.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -26,6 +29,7 @@ public class DataInitializer implements CommandLineRunner {
     private final ProjectRepository projectRepository;
     private final CommentRepository commentRepository;
     private final TagRepository tagRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public void run(String... args) throws Exception {
@@ -51,6 +55,19 @@ public class DataInitializer implements CommandLineRunner {
                 .firstName("Viacheslav")
                 .lastName("Iakovlev")
                 .username("rassel86rus")
+                .role(UserRole.ADMIN)
+                .passwordHash(passwordEncoder.encode("savage69"))
+                .createdAt(ZonedDateTime.now().minusDays(7))
+                .build();
+
+        User user5 = User.builder()
+                .email("secondAmin@mail.ru")
+                .firstName("Admin")
+                .lastName("Second")
+                .username("Admin2")
+                .role(UserRole.ADMIN)
+                .passwordHash(passwordEncoder.encode("Second123!"))
+                .createdAt(ZonedDateTime.now().minusDays(6))
                 .build();
 
         User user2 = User.builder()
@@ -58,6 +75,8 @@ public class DataInitializer implements CommandLineRunner {
                 .firstName("Petr")
                 .lastName("Petrov")
                 .username("petrov11")
+                .passwordHash(passwordEncoder.encode("petr99"))
+                .createdAt(ZonedDateTime.now().minusDays(1))
                 .build();
 
         User user3 = User.builder()
@@ -65,6 +84,8 @@ public class DataInitializer implements CommandLineRunner {
                 .firstName("Maria")
                 .lastName("Dudareva")
                 .username("MeryDu")
+                .passwordHash(passwordEncoder.encode("marydu"))
+                .createdAt(ZonedDateTime.now().minusDays(3))
                 .build();
 
         User user4 = User.builder()
@@ -72,9 +93,11 @@ public class DataInitializer implements CommandLineRunner {
                 .firstName("Oleg")
                 .lastName("Olegovich")
                 .username("olegik88")
+                .passwordHash(passwordEncoder.encode("oleg11"))
+                .createdAt(ZonedDateTime.now())
                 .build();
 
-        List<User> savedUsers = userRepository.saveAll(List.of(user1, user2, user3, user4));
+        List<User> savedUsers = userRepository.saveAll(List.of(user1, user2, user3, user4, user5));
         log.info("Created {} users", savedUsers.size());
         return savedUsers;
     }

@@ -1,15 +1,15 @@
 package com.viacheslav.taskmanager.service.impl;
 
-import com.viacheslav.taskmanager.dto.project.ProjectCreateRequest;
-import com.viacheslav.taskmanager.dto.project.ProjectPatchRequest;
-import com.viacheslav.taskmanager.dto.project.ProjectResponse;
-import com.viacheslav.taskmanager.dto.project.ProjectUpdateRequest;
-import com.viacheslav.taskmanager.entity.Project;
-import com.viacheslav.taskmanager.entity.User;
 import com.viacheslav.taskmanager.exception.AccessDeniedException;
-import com.viacheslav.taskmanager.exception.DuplicateResourceException;
+import com.viacheslav.taskmanager.exception.ResourceAlreadyExistsException;
 import com.viacheslav.taskmanager.exception.ResourceNotFoundException;
 import com.viacheslav.taskmanager.mapper.ProjectMapper;
+import com.viacheslav.taskmanager.model.Project;
+import com.viacheslav.taskmanager.model.User;
+import com.viacheslav.taskmanager.model.dto.project.ProjectCreateRequest;
+import com.viacheslav.taskmanager.model.dto.project.ProjectPatchRequest;
+import com.viacheslav.taskmanager.model.dto.project.ProjectResponse;
+import com.viacheslav.taskmanager.model.dto.project.ProjectUpdateRequest;
 import com.viacheslav.taskmanager.repository.ProjectRepository;
 import com.viacheslav.taskmanager.service.CurrentUserService;
 import com.viacheslav.taskmanager.service.ProjectService;
@@ -42,7 +42,7 @@ public class ProjectServiceImpl implements ProjectService {
         User user = currentUserService.getCurrentUser();
 
         if (projectRepository.existsByNameAndOwnerId(request.name(), user.getId())) {
-            throw new DuplicateResourceException(
+            throw new ResourceAlreadyExistsException(
                     String.format("Project with name \"%s\" already exists", request.name())
             );
         }

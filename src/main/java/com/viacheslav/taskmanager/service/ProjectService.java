@@ -1,9 +1,9 @@
 package com.viacheslav.taskmanager.service;
 
-import com.viacheslav.taskmanager.dto.project.ProjectCreateRequest;
-import com.viacheslav.taskmanager.dto.project.ProjectPatchRequest;
-import com.viacheslav.taskmanager.dto.project.ProjectResponse;
-import com.viacheslav.taskmanager.dto.project.ProjectUpdateRequest;
+import com.viacheslav.taskmanager.model.dto.project.ProjectCreateRequest;
+import com.viacheslav.taskmanager.model.dto.project.ProjectPatchRequest;
+import com.viacheslav.taskmanager.model.dto.project.ProjectResponse;
+import com.viacheslav.taskmanager.model.dto.project.ProjectUpdateRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
