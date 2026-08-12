@@ -54,9 +54,9 @@ public class DataInitializer implements CommandLineRunner {
                 .email("jakovlev.vya4eslaw@mail.ru")
                 .firstName("Viacheslav")
                 .lastName("Iakovlev")
-                .username("rassel86rus")
+                .username("Rassel86rus")
                 .role(UserRole.ADMIN)
-                .passwordHash(passwordEncoder.encode("savage69"))
+                .passwordHash(passwordEncoder.encode("Savage69!"))
                 .createdAt(ZonedDateTime.now().minusDays(7))
                 .build();
 
@@ -74,8 +74,8 @@ public class DataInitializer implements CommandLineRunner {
                 .email("petr@mail.ru")
                 .firstName("Petr")
                 .lastName("Petrov")
-                .username("petrov11")
-                .passwordHash(passwordEncoder.encode("petr99"))
+                .username("Petrov11")
+                .passwordHash(passwordEncoder.encode("Petruxa99!"))
                 .createdAt(ZonedDateTime.now().minusDays(1))
                 .build();
 
@@ -83,8 +83,8 @@ public class DataInitializer implements CommandLineRunner {
                 .email("maria@mail.ru")
                 .firstName("Maria")
                 .lastName("Dudareva")
-                .username("MeryDu")
-                .passwordHash(passwordEncoder.encode("marydu"))
+                .username("MaryDu99")
+                .passwordHash(passwordEncoder.encode("Marydu99!"))
                 .createdAt(ZonedDateTime.now().minusDays(3))
                 .build();
 
@@ -92,7 +92,7 @@ public class DataInitializer implements CommandLineRunner {
                 .email("user13@mainl.ru")
                 .firstName("Oleg")
                 .lastName("Olegovich")
-                .username("olegik88")
+                .username("Olegik88")
                 .passwordHash(passwordEncoder.encode("oleg11"))
                 .createdAt(ZonedDateTime.now())
                 .build();
@@ -105,9 +105,9 @@ public class DataInitializer implements CommandLineRunner {
     private List<Project> createProjects(List<User> users) {
         log.debug("Creating projects...");
 
-        User viacheslav = findUserByUsername(users, "rassel86rus");
-        User maria = findUserByUsername(users, "MeryDu");
-        User petr = findUserByUsername(users, "petrov11");
+        User viacheslav = findUserByUsername(users, "Rassel86rus");
+        User maria = findUserByUsername(users, "MaryDu99");
+        User petr = findUserByUsername(users, "Petrov11");
 
         Project personalProject = Project.builder()
                 .name("Personal tasks")
@@ -147,9 +147,9 @@ public class DataInitializer implements CommandLineRunner {
     }
 
     private List<Task> createTasks(List<Project> projects, List<User> users) {
-        User viacheslav = findUserByUsername(users, "rassel86rus");
-        User maria = findUserByUsername(users, "MeryDu");
-        User petr = findUserByUsername(users, "petrov11");
+        User viacheslav = findUserByUsername(users, "Rassel86rus");
+        User maria = findUserByUsername(users, "MeryDu99");
+        User petr = findUserByUsername(users, "Petrov11");
 
         Project personalProject = findProjectByName(projects, "Personal tasks");
         Project teamProject = findProjectByName(projects, "Task Manager Development");
@@ -209,10 +209,10 @@ public class DataInitializer implements CommandLineRunner {
     private void createComments(List<Task> tasks, List<User> users) {
         log.debug("Creating comments...");
 
-        User viacheslav = findUserByUsername(users, "rassel86rus");
-        User maria = findUserByUsername(users, "MeryDu");
-        User petr = findUserByUsername(users, "petrov11");
-        User oleg = findUserByUsername(users, "olegik88");
+        User viacheslav = findUserByUsername(users, "Rassel86rus");
+        User maria = findUserByUsername(users, "MeryDu99");
+        User petr = findUserByUsername(users, "Petrov11");
+        User oleg = findUserByUsername(users, "Olegik88");
 
         Task apiTask = tasks.stream()
                 .filter(task -> task.getTitle().contains("API"))

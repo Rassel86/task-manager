@@ -15,7 +15,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public CurrentUser loadUserByUsername(String usernameOrEmail) throws UsernameNotFoundException {
-        return userRepository.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail)
+        return userRepository.findByUsernameOrEmail(usernameOrEmail)
                 .map(CurrentUser::new)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }

@@ -27,13 +27,11 @@ import java.util.List;
 
 @Slf4j
 @Component
-@Order(Ordered.HIGHEST_PRECEDENCE + 20)
 @RequiredArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
-
     private final AntPathMatcher pathMatcher = new AntPathMatcher();
     private static final List<String> PERMITTED_PATHS = Arrays.stream(PermittedEndpoint.values())
                     .map(PermittedEndpoint::getPathPrefix)

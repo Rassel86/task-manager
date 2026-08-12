@@ -14,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
-@CrossOrigin(origins = {"http://127.0.0.1:5500", "http://localhost:5500"})
+@CrossOrigin(origins = {"http://127.0.0.1:5500", "http://localhost:5173"})
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor

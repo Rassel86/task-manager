@@ -23,7 +23,13 @@ public interface UserRepository extends JpaRepository<User, UUID>, JpaSpecificat
 
     Optional<User> findByUsername(String username);
 
-    Optional<User> findByUsernameOrEmail(String username, String email);
+    @Query(value = """
+    SELECT * FROM users WHERE username = :login
+    UNION ALL
+    SELECT * FROM users WHERE email = :login
+    LIMIT 1
+    """, nativeQuery = true)
+    Optional<User> findByUsernameOrEmail(@Param("login") String login);
 
     @Query("SELECT CASE WHEN COUNT(u) > 0 THEN true ELSE false END FROM User u WHERE LOWER(u.username) = LOWER(:username)")
     boolean existsByUsernameIgnoreCase(@Param("username") String username);

@@ -250,15 +250,13 @@ public class UserServiceImpl implements UserService {
 
     private void validateUniqueUsername(String username) {
         if (userRepository.existsByUsernameIgnoreCase(username)) {
-            throw new ResourceAlreadyExistsException(
-                    String.format("User with username %s already exists", LoggingUtils.maskUsername(username)));
+            throw new ResourceAlreadyExistsException("Username is already taken");
         }
     }
 
     private void validateUniqueEmail(String email) {
         if (userRepository.existsByEmailIgnoreCase(email)) {
-            throw new ResourceAlreadyExistsException(
-                    String.format("User with email %s already exists", LoggingUtils.maskEmail(email)));
+            throw new ResourceAlreadyExistsException("Email is already taken");
         }
     }
 
