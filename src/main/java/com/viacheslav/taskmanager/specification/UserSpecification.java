@@ -1,7 +1,7 @@
 package com.viacheslav.taskmanager.specification;
 
+import com.viacheslav.taskmanager.model.UserAccount;
 import com.viacheslav.taskmanager.model.dto.user.UserFilterRequest;
-import com.viacheslav.taskmanager.model.User;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
@@ -12,7 +12,7 @@ import java.util.List;
 @Component
 public class UserSpecification {
 
-    public Specification<User> getUsersSpecification(UserFilterRequest filter) {
+    public Specification<UserAccount> getUsersSpecification(UserFilterRequest filter) {
         return (root, query, cb) -> {
 
             List<Predicate> predicates = new ArrayList<>();

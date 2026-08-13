@@ -13,7 +13,7 @@ public record RegisterRequest(
         @Size(min = 3, max = 50, message = "Username must be between {min} and {max} characters")
         @Pattern(regexp = "^[a-zA-Z0-9._-]+$",
                 message = "Username can only contain: letters (a-z), numbers, dots (.), underscores (_) and hyphens (-)")
-        String username,
+        String displayName,
 
         @NotBlank(message = "Email is required")
         @Size(max = 100, message = "Email is too long")

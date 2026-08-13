@@ -2,42 +2,38 @@ package com.viacheslav.taskmanager.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.ZonedDateTime;
-import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "projects")
+@Table(name = "credentials")
 @EntityListeners(AuditingEntityListener.class)
-@DynamicUpdate
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Project {
+public class Credentials {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(name = "name", nullable = false)
-    private String name;
+    @Column(unique = true, nullable = false, length = 100)
+    private String login;
 
-    @Column(name = "description", length = 2000)
-    private String description;
+    @Column(name = "password_hash", nullable = false, length = 68)
+    private String passwordHash;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "owner_id", nullable = false)
-    private UserAccount owner;
+    @Builder.Default
+    @Column(nullable = false)
+    private boolean enabled = true;
 
-    @OneToMany(mappedBy = "project")
-    private List<Task> tasks;
+    @Column(name = "last_login_at")
+    private ZonedDateTime lastLoginAt;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     @CreatedDate
@@ -46,4 +42,9 @@ public class Project {
     @Column(name = "updated_at")
     @LastModifiedDate
     private ZonedDateTime updatedAt;
+
+    @OneToOne
+    @MapsId
+    @JoinColumn(name = "id")
+    private UserAccount userAccount;
 }

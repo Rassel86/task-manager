@@ -5,10 +5,10 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
 
-    <changeSet id="20260318-09-delete-nullable-constraint-firstname-lastname-users" author="Viacheslav Iakovlev">
-        <comment>Delete nullable constraint for firstname and lastname fields in users table</comment>
-        <dropNotNullConstraint tableName="users" columnName="first_name"/>
-        <dropNotNullConstraint tableName="users" columnName="last_name"/>
+    <changeSet id="20260318-09-delete-nullable-constraint-firstname-lastname-user_accounts" author="Viacheslav Iakovlev">
+        <comment>Delete nullable constraint for firstname and lastname fields in user_accounts table</comment>
+        <dropNotNullConstraint tableName="user_accounts" columnName="first_name"/>
+        <dropNotNullConstraint tableName="user_accounts" columnName="last_name"/>
     </changeSet>
 
 </databaseChangeLog>

@@ -31,7 +31,7 @@
         <addForeignKeyConstraint baseTableName="projects"
                                  baseColumnNames="owner_id"
                                  constraintName="fk_projects_owner"
-                                 referencedTableName="users"
+                                 referencedTableName="user_accounts"
                                  referencedColumnNames="id"
                                  onDelete="RESTRICT"
                                  onUpdate="CASCADE"/>

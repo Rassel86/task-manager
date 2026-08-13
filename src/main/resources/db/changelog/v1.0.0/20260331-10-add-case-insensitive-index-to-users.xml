@@ -8,7 +8,7 @@
     <changeSet id="20260331-10-add-index-to-username" author="Viacheslav Iakovlev">
         <comment>Add case-insensitive index to username column</comment>
         <sql>
-            CREATE UNIQUE INDEX idx_users_username_lower ON users (LOWER(username));
+            CREATE UNIQUE INDEX idx_users_username_lower ON user_accounts (LOWER(username));
         </sql>
         <rollback>
             DROP INDEX idx_users_username_lower;
@@ -18,7 +18,7 @@
     <changeSet id="20260331-10-add-index-to-email" author="Viacheslav Iakovlev">
         <comment>Add case-insensitive index to email column</comment>
         <sql>
-            CREATE UNIQUE INDEX idx_users_email_lower ON users (LOWER(email));
+            CREATE UNIQUE INDEX idx_users_email_lower ON user_accounts (LOWER(email));
         </sql>
         <rollback>
             DROP INDEX idx_users_email_lower;

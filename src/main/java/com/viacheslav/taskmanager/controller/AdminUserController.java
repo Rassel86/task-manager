@@ -6,7 +6,7 @@ import com.viacheslav.taskmanager.model.dto.user.ResetPasswordRequest;
 import com.viacheslav.taskmanager.model.dto.user.UserFilterRequest;
 import com.viacheslav.taskmanager.model.dto.user.UserResponse;
 import com.viacheslav.taskmanager.model.dto.user.UserUpdateByAdminRequest;
-import com.viacheslav.taskmanager.service.UserService;
+import com.viacheslav.taskmanager.service.UserAccountService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,17 +25,17 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class AdminUserController {
 
-    private final UserService userService;
+    private final UserAccountService userAccountService;
 
     @GetMapping("/{id}")
     public ResponseEntity<UserResponse> getUser(@PathVariable("id") UUID userId) {
-        UserResponse userResponse = userService.getUserById(userId);
+        UserResponse userResponse = userAccountService.getUserById(userId);
         return ResponseEntity.ok(userResponse);
     }
 
     @GetMapping
     public ResponseEntity<PageResponse<UserResponse>> getUsersPage(@ModelAttribute UserFilterRequest filter) {
-        PageResponse<UserResponse> response = userService.getUsersPage(filter);
+        PageResponse<UserResponse> response = userAccountService.getUsersPage(filter);
         return ResponseEntity.ok(response);
     }
 
@@ -43,24 +43,24 @@ public class AdminUserController {
     @PutMapping("/{id}")
     public ResponseEntity<UserResponse> updateUser(@PathVariable("id") UUID userId,
                                                    @Valid @RequestBody UserUpdateByAdminRequest request) {
-        UserResponse response = userService.updateUserByAdmin(userId, request);
+        UserResponse response = userAccountService.updateUserByAdmin(userId, request);
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/{id}/block")
     public ResponseEntity<SuccessResponse> blockUser(@PathVariable("id") UUID userId) {
-        userService.blockUser(userId);
+        userAccountService.blockUser(userId);
         return ResponseEntity.ok(SuccessResponse.builder()
-                .message(String.format("User with id %s blocked", userId))
+                .message(String.format("UserAccount with id %s blocked", userId))
                 .timestamp(LocalDateTime.now())
                 .build());
     }
 
     @PostMapping("/{id}/unblock")
     public ResponseEntity<SuccessResponse> unblockUser(@PathVariable("id") UUID userId) {
-        userService.unblockUser(userId);
+        userAccountService.unblockUser(userId);
         return ResponseEntity.ok(SuccessResponse.builder()
-                .message(String.format("User with id %s unblocked", userId))
+                .message(String.format("UserAccount with id %s unblocked", userId))
                 .timestamp(LocalDateTime.now())
                 .build());
     }
@@ -69,7 +69,7 @@ public class AdminUserController {
     @PostMapping("/{id}/reset-password")
     public ResponseEntity<SuccessResponse> resetPassword(@PathVariable("id") UUID userId,
                                                          @Valid @RequestBody ResetPasswordRequest request) {
-        userService.resetPasswordByAdmin(userId, request.newPassword());
+        userAccountService.resetPasswordByAdmin(userId, request.newPassword());
         return ResponseEntity.ok(SuccessResponse.builder()
                 .message("Password reset successfully")
                 .timestamp(LocalDateTime.now())
@@ -80,6 +80,6 @@ public class AdminUserController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUser(@PathVariable("id") UUID userId) {
-        userService.deleteUserByAdmin(userId);
+        userAccountService.deleteUserByAdmin(userId);
     }
 }

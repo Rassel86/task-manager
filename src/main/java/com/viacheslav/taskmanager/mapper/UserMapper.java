@@ -1,7 +1,7 @@
 package com.viacheslav.taskmanager.mapper;
 
+import com.viacheslav.taskmanager.model.UserAccount;
 import com.viacheslav.taskmanager.model.dto.user.UserResponse;
-import com.viacheslav.taskmanager.model.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
 import org.mapstruct.ReportingPolicy;
@@ -13,7 +13,7 @@ import java.util.List;
         unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface UserMapper {
 
-    UserResponse toUserResponse(User user);
+    UserResponse toUserResponse(UserAccount userAccount);
 
-    List<UserResponse> toUserListResponse(List<User> users);
+    List<UserResponse> toUserListResponse(List<UserAccount> userAccounts);
 }

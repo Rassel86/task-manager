@@ -13,27 +13,20 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "users")
+@Table(name = "user_accounts")
 @EntityListeners(AuditingEntityListener.class)
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class UserAccount {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(unique = true, nullable = false, length = 100)
-    private String email;
-
-    @Column(unique = true, nullable = false, length = 50)
-    private String username;
-
-    @Column(nullable = false, length = 68)
-    private String passwordHash;
+    //business-fields
 
     @Column(name = "first_name", length = 50)
     private String firstName;
@@ -50,6 +43,24 @@ public class User {
     @Column(nullable = false)
     private boolean enabled = true;
 
+    @Column(name = "display_name", unique = true, nullable = false, length = 50)
+    private String displayName;
+
+    @Column(name = "contact_email", unique = true, nullable = false, length = 100)
+    private String contactEmail;
+
+    @Column(length = 500)
+    private String bio;
+
+    @Column(name = "avatar_url")
+    private String avatarUrl;
+
+    @Column(name = "phone_number", length = 20)
+    private String phoneNumber;
+
+    @Column(name = "timezone")
+    private String timezone;
+
     @Column(name = "created_at", nullable = false, updatable = false)
     @CreatedDate
     private ZonedDateTime createdAt;
@@ -57,6 +68,11 @@ public class User {
     @Column(name = "updated_at")
     @LastModifiedDate
     private ZonedDateTime updatedAt;
+
+    //Relations with Entities
+
+    @OneToOne(mappedBy = "userAccount")
+    private Credentials credentials;
 
     @OneToMany(mappedBy = "owner")
     List<Project> projects = new ArrayList<>();

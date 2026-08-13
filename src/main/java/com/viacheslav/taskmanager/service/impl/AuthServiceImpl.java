@@ -4,7 +4,7 @@ import com.viacheslav.taskmanager.exception.AccountDisabledException;
 import com.viacheslav.taskmanager.exception.InvalidTokenException;
 import com.viacheslav.taskmanager.exception.PasswordsDontMatchException;
 import com.viacheslav.taskmanager.mapper.AuthMapper;
-import com.viacheslav.taskmanager.model.User;
+import com.viacheslav.taskmanager.model.UserAccount;
 import com.viacheslav.taskmanager.model.dto.auth.AuthResponse;
 import com.viacheslav.taskmanager.model.dto.auth.LoginRequest;
 import com.viacheslav.taskmanager.model.dto.auth.RegisterRequest;
@@ -14,7 +14,7 @@ import com.viacheslav.taskmanager.security.model.CurrentUser;
 import com.viacheslav.taskmanager.security.service.CustomUserDetailsService;
 import com.viacheslav.taskmanager.security.service.JwtService;
 import com.viacheslav.taskmanager.service.AuthService;
-import com.viacheslav.taskmanager.service.UserService;
+import com.viacheslav.taskmanager.service.UserAccountService;
 import com.viacheslav.taskmanager.util.LoggingUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
-    private final UserService userService;
+    private final UserAccountService userAccountService;
     private final AuthMapper authMapper;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
@@ -49,7 +49,7 @@ public class AuthServiceImpl implements AuthService {
         String encodedPassword = passwordEncoder.encode(request.password());
 
         UserCreateRequest createRequest = authMapper.toUserCreateRequest(request, encodedPassword);
-        UserResponse response = userService.createRegisteredUser(createRequest);
+        UserResponse response = userAccountService.createRegisteredUser(createRequest);
         log.info("Registration successful for user with email {}", LoggingUtils.maskEmail(response.email()));
         return response;
     }
@@ -61,9 +61,9 @@ public class AuthServiceImpl implements AuthService {
                 new UsernamePasswordAuthenticationToken(request.usernameOrEmail(), request.password()));
 
         CurrentUser currentUser = (CurrentUser) authentication.getPrincipal();
-        User user = currentUser.getUser();
+        UserAccount userAccount = currentUser.getCredentials().getUserAccount();
 
-        validateUserStatus(user);
+        validateUserStatus(userAccount);
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
@@ -71,15 +71,15 @@ public class AuthServiceImpl implements AuthService {
         String refreshToken = jwtService.generateRefreshToken(currentUser);
 
         log.info("Login successful - email: {}, username: {}",
-                LoggingUtils.maskEmail(user.getEmail()), LoggingUtils.maskUsername(user.getUsername()));
+                LoggingUtils.maskEmail(userAccount.getContactEmail()), LoggingUtils.maskUsername(userAccount.getDisplayName()));
         return AuthResponse.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .tokenType("Bearer")
-                .userId(user.getId())
-                .username(user.getUsername())
-                .email(user.getEmail())
-                .role(user.getRole().getAuthority())
+                .userId(userAccount.getId())
+                .username(userAccount.getDisplayName())
+                .email(userAccount.getContactEmail())
+                .role(userAccount.getRole().getAuthority())
                 .build();
     }
 
@@ -95,22 +95,22 @@ public class AuthServiceImpl implements AuthService {
         String username = jwtService.extractUsername(refreshToken);
         CurrentUser currentUser = userDetailsService.loadUserByUsername(username);
 
-        User user = currentUser.getUser();
+        UserAccount userAccount = currentUser.getCredentials().getUserAccount();
 
-        validateUserStatus(user);
+        validateUserStatus(userAccount);
 
         Authentication authentication = new UsernamePasswordAuthenticationToken(
                 currentUser, null, currentUser.getAuthorities());
         String newAccessToken = jwtService.generateAccessToken(authentication);
-        log.info("Token refresh successful for user with email {}", LoggingUtils.maskEmail(user.getEmail()));
+        log.info("Token refresh successful for userAccount with email {}", LoggingUtils.maskEmail(userAccount.getContactEmail()));
         return AuthResponse.builder()
                 .accessToken(newAccessToken)
                 .refreshToken(refreshToken)
                 .tokenType("Bearer")
-                .userId(user.getId())
-                .username(user.getUsername())
-                .email(user.getEmail())
-                .role(user.getRole().getAuthority())
+                .userId(userAccount.getId())
+                .username(userAccount.getDisplayName())
+                .email(userAccount.getContactEmail())
+                .role(userAccount.getRole().getAuthority())
                 .build();
     }
 
@@ -121,10 +121,10 @@ public class AuthServiceImpl implements AuthService {
         }
     }
 
-    private void validateUserStatus(User user) {
-        if (!user.isEnabled()) {
-            log.warn("User {} disabled", user.getId());
-            throw new AccountDisabledException("User account is disabled");
+    private void validateUserStatus(UserAccount userAccount) {
+        if (!userAccount.isEnabled()) {
+            log.warn("UserAccount {} disabled", userAccount.getId());
+            throw new AccountDisabledException("UserAccount account is disabled");
         }
     }
 }

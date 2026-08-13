@@ -5,7 +5,7 @@ import com.viacheslav.taskmanager.model.dto.auth.SuccessResponse;
 import com.viacheslav.taskmanager.model.dto.user.UserResponse;
 import com.viacheslav.taskmanager.model.dto.user.UserUpdateRequest;
 import com.viacheslav.taskmanager.security.model.CurrentUser;
-import com.viacheslav.taskmanager.service.UserService;
+import com.viacheslav.taskmanager.service.UserAccountService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,18 +24,18 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ProfileController {
 
-    private final UserService userService;
+    private final UserAccountService userAccountService;
 
     @GetMapping
     public ResponseEntity<UserResponse> getMyProfile(@AuthenticationPrincipal CurrentUser currentUser) {
-        UserResponse response = userService.getByEmail(currentUser.getUsername());
+        UserResponse response = userAccountService.getByEmail(currentUser.getUsername());
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/change-password")
     public ResponseEntity<SuccessResponse> changePassword(@AuthenticationPrincipal CurrentUser currentUser,
                                                           @Valid @RequestBody ChangePasswordRequest request) {
-        userService.changePassword(currentUser.getUser(), request);
+        userAccountService.changePassword(currentUser.getCredentials().getUserAccount(), request);
         return ResponseEntity.ok(SuccessResponse.builder()
                 .message("Password changed successfully")
                 .timestamp(LocalDateTime.now())
@@ -45,7 +45,7 @@ public class ProfileController {
     @PutMapping
     public ResponseEntity<UserResponse> updateProfile(@AuthenticationPrincipal CurrentUser currentUser,
                                                       @Valid @RequestBody UserUpdateRequest request) {
-        UserResponse response = userService.updateUser(currentUser.getUser(), request);
+        UserResponse response = userAccountService.updateUser(currentUser.getCredentials().getUserAccount(), request);
         return ResponseEntity.ok(response);
     }
 
@@ -53,6 +53,6 @@ public class ProfileController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteProfile(@AuthenticationPrincipal CurrentUser currentUser) {
         UUID userId = currentUser.getId();
-        userService.deleteUser(userId);
+        userAccountService.deleteUser(userId);
     }
 }
