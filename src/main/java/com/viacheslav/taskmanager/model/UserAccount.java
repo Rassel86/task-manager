@@ -71,7 +71,10 @@ public class UserAccount {
 
     //Relations with Entities
 
-    @OneToOne(mappedBy = "userAccount")
+    @OneToOne(cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY)
+    @JoinColumn(name = "credentials_id")
     private Credentials credentials;
 
     @OneToMany(mappedBy = "owner")

@@ -23,13 +23,13 @@ public interface UserAccountService {
 
     void changePassword(UserAccount userAccount, ChangePasswordRequest request);
 
-    UserResponse createRegisteredUser(UserCreateRequest request);
+    UserResponse createUserAccount(UserCreateDto request);
 
     UserAccount findByUsernameOrEmail(String usernameOrEmail);
 
     UserResponse getByEmail(String email);
 
-    UserResponse createUserByAdmin(UserCreateRequest request);
+    UserResponse createUserByAdmin(UserCreateDto request);
 
     void resetPasswordByAdmin(UUID id, String newPassword);
 

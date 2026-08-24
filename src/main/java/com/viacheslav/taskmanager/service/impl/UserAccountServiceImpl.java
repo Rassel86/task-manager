@@ -2,13 +2,15 @@ package com.viacheslav.taskmanager.service.impl;
 
 import com.viacheslav.taskmanager.exception.*;
 import com.viacheslav.taskmanager.mapper.UserMapper;
+import com.viacheslav.taskmanager.model.Credentials;
 import com.viacheslav.taskmanager.model.UserAccount;
 import com.viacheslav.taskmanager.model.dto.PageResponse;
 import com.viacheslav.taskmanager.model.dto.auth.ChangePasswordRequest;
 import com.viacheslav.taskmanager.model.dto.user.*;
 import com.viacheslav.taskmanager.model.enums.UserRole;
+import com.viacheslav.taskmanager.repository.CredentialsRepository;
 import com.viacheslav.taskmanager.repository.UserAccountRepository;
-import com.viacheslav.taskmanager.security.model.CurrentUser;
+import com.viacheslav.taskmanager.security.model.CustomUserDetails;
 import com.viacheslav.taskmanager.service.UserAccountService;
 import com.viacheslav.taskmanager.specification.UserSpecification;
 import com.viacheslav.taskmanager.util.LoggingUtils;
@@ -18,7 +20,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -33,9 +34,9 @@ import java.util.UUID;
 public class UserAccountServiceImpl implements UserAccountService {
 
     private final UserAccountRepository userAccountRepository;
+    private final CredentialsRepository credentialsRepository;
     private final UserMapper userMapper;
     private final UserSpecification userSpecification;
-    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserResponse getUserById(UUID id) {
@@ -80,16 +81,16 @@ public class UserAccountServiceImpl implements UserAccountService {
 
     @Override
     @Transactional
-    public UserResponse createUserByAdmin(UserCreateRequest request) {
+    public UserResponse createUserByAdmin(UserCreateDto request) {
         log.info("Admin updating userAccount with email {} and username {}",
-                LoggingUtils.maskEmail(request.email()), LoggingUtils.maskUsername(request.username()));
-        validateUniqueUsername(request.username());
+                LoggingUtils.maskEmail(request.email()), LoggingUtils.maskUsername(request.displayName()));
+        validateUniqueUsername(request.displayName());
         validateUniqueEmail(request.email());
 
         UserAccount userAccount = UserAccount.builder()
                 .firstName(request.firstName())
                 .lastName(request.lastName())
-                .displayName(request.username())
+                .displayName(request.displayName())
                 .contactEmail(request.email())
                 .build();
 
@@ -100,19 +101,27 @@ public class UserAccountServiceImpl implements UserAccountService {
 
     @Override
     @Transactional
-    public UserResponse createRegisteredUser(UserCreateRequest request) {
+    public UserResponse createUserAccount(UserCreateDto request) {
         log.info("Create userAccount via registration: {}", LoggingUtils.maskEmail(request.email()));
-        validateUniqueUsername(request.username());
+        validateUniqueUsername(request.displayName());
         validateUniqueEmail(request.email());
 
-        UserAccount userAccount = UserAccount.builder()
-                .displayName(request.username())
+        UserAccount account = UserAccount.builder()
+                .displayName(request.displayName())
                 .contactEmail(request.email())
                 .build();
 
-        UserAccount savedUserAccount = userAccountRepository.save(userAccount);
-        log.info("UserAccount created successfully with id: {}", savedUserAccount.getId());
-        return userMapper.toUserResponse(savedUserAccount);
+        Credentials credentials = Credentials.builder()
+                .login(request.email())
+                .passwordHash(request.password())
+                .userAccount(account)
+                .build();
+
+        account.setCredentials(credentials);
+
+        UserAccount createdUserAccount = userAccountRepository.save(account);
+        log.info("UserAccount created successfully with id: {}", createdUserAccount.getId());
+        return userMapper.toUserResponse(createdUserAccount);
     }
 
     @Override
@@ -253,7 +262,7 @@ public class UserAccountServiceImpl implements UserAccountService {
     }
 
     private void validateUniqueEmail(String email) {
-        if (userAccountRepository.existsByEmailIgnoreCase(email)) {
+        if (credentialsRepository.existsByLogin(email)) {
             throw new ResourceAlreadyExistsException("Email is already taken");
         }
     }
@@ -313,11 +322,11 @@ public class UserAccountServiceImpl implements UserAccountService {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Object principal = auth.getPrincipal();
 
-        if (!(principal instanceof CurrentUser currentUser)) {
+        if (!(principal instanceof CustomUserDetails customUserDetails)) {
             throw new IllegalStateException("Unexpected principal type: " +
                                             principal.getClass().getSimpleName());
         }
 
-        return currentUser.getCredentials().getUserAccount();
+        return customUserDetails.getCredentials().getUserAccount();
     }
 }

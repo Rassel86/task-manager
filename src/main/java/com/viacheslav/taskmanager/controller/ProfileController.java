@@ -4,7 +4,7 @@ import com.viacheslav.taskmanager.model.dto.auth.ChangePasswordRequest;
 import com.viacheslav.taskmanager.model.dto.auth.SuccessResponse;
 import com.viacheslav.taskmanager.model.dto.user.UserResponse;
 import com.viacheslav.taskmanager.model.dto.user.UserUpdateRequest;
-import com.viacheslav.taskmanager.security.model.CurrentUser;
+import com.viacheslav.taskmanager.security.model.CustomUserDetails;
 import com.viacheslav.taskmanager.service.UserAccountService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@CrossOrigin(origins = {"http://127.0.0.1:5500", "http://localhost:5173"})
+@CrossOrigin(origins = {"http://127.0.0.1:5500", "http://localhost:5173"}, allowCredentials = "true")
 @RestController
 @PreAuthorize("isAuthenticated()")
 @RequestMapping("/api/v1/profile")
@@ -27,15 +27,15 @@ public class ProfileController {
     private final UserAccountService userAccountService;
 
     @GetMapping
-    public ResponseEntity<UserResponse> getMyProfile(@AuthenticationPrincipal CurrentUser currentUser) {
-        UserResponse response = userAccountService.getByEmail(currentUser.getUsername());
+    public ResponseEntity<UserResponse> getMyProfile(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        UserResponse response = userAccountService.getByEmail(customUserDetails.getUsername());
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/change-password")
-    public ResponseEntity<SuccessResponse> changePassword(@AuthenticationPrincipal CurrentUser currentUser,
+    public ResponseEntity<SuccessResponse> changePassword(@AuthenticationPrincipal CustomUserDetails customUserDetails,
                                                           @Valid @RequestBody ChangePasswordRequest request) {
-        userAccountService.changePassword(currentUser.getCredentials().getUserAccount(), request);
+        userAccountService.changePassword(customUserDetails.getCredentials().getUserAccount(), request);
         return ResponseEntity.ok(SuccessResponse.builder()
                 .message("Password changed successfully")
                 .timestamp(LocalDateTime.now())
@@ -43,16 +43,16 @@ public class ProfileController {
     }
 
     @PutMapping
-    public ResponseEntity<UserResponse> updateProfile(@AuthenticationPrincipal CurrentUser currentUser,
+    public ResponseEntity<UserResponse> updateProfile(@AuthenticationPrincipal CustomUserDetails customUserDetails,
                                                       @Valid @RequestBody UserUpdateRequest request) {
-        UserResponse response = userAccountService.updateUser(currentUser.getCredentials().getUserAccount(), request);
+        UserResponse response = userAccountService.updateUser(customUserDetails.getCredentials().getUserAccount(), request);
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteProfile(@AuthenticationPrincipal CurrentUser currentUser) {
-        UUID userId = currentUser.getId();
+    public void deleteProfile(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        UUID userId = customUserDetails.getId();
         userAccountService.deleteUser(userId);
     }
 }

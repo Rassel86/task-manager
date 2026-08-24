@@ -14,7 +14,7 @@ import java.util.UUID;
 
 @Getter
 @RequiredArgsConstructor
-public class CurrentUser implements UserDetails {
+public class CustomUserDetails implements UserDetails {
 
     private final Credentials credentials;
 
@@ -55,5 +55,9 @@ public class CurrentUser implements UserDetails {
 
     public UUID getId() {
         return credentials.getId();
+    }
+
+    public UserAccount getUserAccount() {
+        return credentials.getUserAccount();
     }
 }

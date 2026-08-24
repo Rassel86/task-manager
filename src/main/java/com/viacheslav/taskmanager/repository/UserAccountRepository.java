@@ -11,23 +11,15 @@ import java.util.UUID;
 
 public interface UserAccountRepository extends JpaRepository<UserAccount, UUID>, JpaSpecificationExecutor<UserAccount> {
 
-    @Query(value = """
-    SELECT * FROM user_accounts WHERE username = :login
-    UNION ALL
-    SELECT * FROM user_accounts WHERE email = :login
-    LIMIT 1
-    """, nativeQuery = true)
-    Optional<UserAccount> findByUsernameOrEmail(@Param("login") String login);
-
-    @Query("SELECT CASE WHEN COUNT(u) > 0 THEN true ELSE false END FROM UserAccount u WHERE LOWER(u.username) = LOWER(:username)")
+    @Query("SELECT CASE WHEN COUNT(u) > 0 THEN true ELSE false END FROM UserAccount u WHERE LOWER(u.displayName) = LOWER(:username)")
     boolean existsByUsernameIgnoreCase(@Param("username") String username);
 
-    @Query("SELECT CASE WHEN COUNT(u) > 0 THEN true ELSE false END FROM UserAccount u WHERE LOWER(u.email) = LOWER(:email)")
+    @Query("SELECT CASE WHEN COUNT(u) > 0 THEN true ELSE false END FROM UserAccount u WHERE LOWER(u.contactEmail) = LOWER(:email)")
     boolean existsByEmailIgnoreCase(@Param("email") String email);
 
-    @Query("SELECT u FROM UserAccount u WHERE LOWER(u.email) = lower(:email) ")
+    @Query("SELECT u FROM UserAccount u WHERE LOWER(u.contactEmail) = lower(:email) ")
     Optional<UserAccount> findByEmailIgnoreCase(@Param("email") String email);
 
-    @Query("SELECT u FROM UserAccount u WHERE LOWER(u.username) = lower(:username) ")
+    @Query("SELECT u FROM UserAccount u WHERE LOWER(u.displayName) = lower(:username) ")
     Optional<UserAccount> findByUsernameIgnoreCase(@Param("username") String username);
 }

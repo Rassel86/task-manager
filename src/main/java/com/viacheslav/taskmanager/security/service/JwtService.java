@@ -1,5 +1,6 @@
 package com.viacheslav.taskmanager.security.service;
 
+import com.viacheslav.taskmanager.model.UserAccount;
 import io.jsonwebtoken.Claims;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -12,17 +13,12 @@ import java.util.function.Function;
 
 public interface JwtService {
 
-    String generateAccessToken(Authentication authentication);
-    String generateRefreshToken(UserDetails userDetails);
-    String generateTokenWithClaims(UserDetails userDetails, Map<String, Object> extraClaims);
+    String generateAccessToken(UserAccount account);
 
-    boolean isTokenValid(String token);
+    boolean isTokenValid(String token, UserDetails userDetails);
     boolean isTokenExpired(String token);
 
-    String extractUsername(String token);
-    List<GrantedAuthority> getAuthorities(String token);
+    String extractLogin(String token);
     <T> T extractClaim(String token, Function<Claims, T> claimsResolver);
-    Date getExpirationDate(String token);
 
-    Authentication getAuthentication(String token);
 }

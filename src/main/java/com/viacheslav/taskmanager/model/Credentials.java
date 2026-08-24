@@ -20,6 +20,7 @@ import java.util.UUID;
 public class Credentials {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @Column(unique = true, nullable = false, length = 100)
@@ -43,8 +44,6 @@ public class Credentials {
     @LastModifiedDate
     private ZonedDateTime updatedAt;
 
-    @OneToOne
-    @MapsId
-    @JoinColumn(name = "id")
+    @OneToOne(mappedBy = "credentials")
     private UserAccount userAccount;
 }
