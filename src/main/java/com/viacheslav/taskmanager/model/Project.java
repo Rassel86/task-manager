@@ -34,7 +34,7 @@ public class Project {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "owner_id", nullable = false)
-    private User owner;
+    private UserAccount owner;
 
     @OneToMany(mappedBy = "project")
     private List<Task> tasks;

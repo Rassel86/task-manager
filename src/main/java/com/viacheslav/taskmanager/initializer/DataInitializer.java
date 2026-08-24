@@ -24,7 +24,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class DataInitializer implements CommandLineRunner {
 
-    private final UserRepository userRepository;
+    private final UserAccountRepository userRepository;
     private final TaskRepository taskRepository;
     private final ProjectRepository projectRepository;
     private final CommentRepository commentRepository;
@@ -40,74 +40,110 @@ public class DataInitializer implements CommandLineRunner {
             return;
         }
 
-        List<User> users = createUsers();
-        List<Project> projects = createProjects(users);
-        List<Task> tasks = createTasks(projects, users);
-        createComments(tasks, users);
+        List<UserAccount> userAccounts = createUsers();
+        List<Project> projects = createProjects(userAccounts);
+        List<Task> tasks = createTasks(projects, userAccounts);
+        createComments(tasks, userAccounts);
 
         log.info("Data initialization completed successfully!");
     }
 
-    private List<User> createUsers() {
+    private List<UserAccount> createUsers() {
         log.debug("Creating users...");
-        User user1 = User.builder()
-                .email("jakovlev.vya4eslaw@mail.ru")
+
+        UserAccount userAccount1 = UserAccount.builder()
+                .contactEmail("jakovlev.vya4eslaw@mail.ru")
                 .firstName("Viacheslav")
                 .lastName("Iakovlev")
-                .username("Rassel86rus")
+                .displayName("Rassel86rus")
                 .role(UserRole.ADMIN)
-                .passwordHash(passwordEncoder.encode("Savage69!"))
                 .createdAt(ZonedDateTime.now().minusDays(7))
                 .build();
 
-        User user5 = User.builder()
-                .email("secondAmin@mail.ru")
+        Credentials cred1 = Credentials.builder()
+                .userAccount(userAccount1)
+                .login(userAccount1.getContactEmail())
+                .passwordHash(passwordEncoder.encode("Savage69!"))
+                .build();
+
+        userAccount1.setCredentials(cred1);
+
+        UserAccount userAccount2 = UserAccount.builder()
+                .contactEmail("secondAdmin@mail.ru")
                 .firstName("Admin")
                 .lastName("Second")
-                .username("Admin2")
+                .displayName("Admin2")
                 .role(UserRole.ADMIN)
-                .passwordHash(passwordEncoder.encode("Second123!"))
                 .createdAt(ZonedDateTime.now().minusDays(6))
                 .build();
 
-        User user2 = User.builder()
-                .email("petr@mail.ru")
+        Credentials cred2 = Credentials.builder()
+                .userAccount(userAccount2)
+                .login(userAccount2.getContactEmail())
+                .passwordHash(passwordEncoder.encode("Second123!"))
+                .build();
+
+        userAccount2.setCredentials(cred2);
+
+        UserAccount userAccount3 = UserAccount.builder()
+                .contactEmail("petr@mail.ru")
                 .firstName("Petr")
                 .lastName("Petrov")
-                .username("Petrov11")
-                .passwordHash(passwordEncoder.encode("Petruxa99!"))
+                .displayName("Petrov11")
                 .createdAt(ZonedDateTime.now().minusDays(1))
                 .build();
 
-        User user3 = User.builder()
-                .email("maria@mail.ru")
+        Credentials cred3 = Credentials.builder()
+                .userAccount(userAccount3)
+                .login(userAccount3.getContactEmail())
+                .passwordHash(passwordEncoder.encode("Petruxa99!"))
+                .build();
+
+        userAccount3.setCredentials(cred3);
+
+        UserAccount userAccount4 = UserAccount.builder()
+                .contactEmail("maria@mail.ru")
                 .firstName("Maria")
                 .lastName("Dudareva")
-                .username("MaryDu99")
-                .passwordHash(passwordEncoder.encode("Marydu99!"))
+                .displayName("MaryDu99")
                 .createdAt(ZonedDateTime.now().minusDays(3))
                 .build();
 
-        User user4 = User.builder()
-                .email("user13@mainl.ru")
+        Credentials cred4 = Credentials.builder()
+                .userAccount(userAccount4)
+                .login(userAccount4.getContactEmail())
+                .passwordHash(passwordEncoder.encode("Marydu99!"))
+                .build();
+
+        userAccount4.setCredentials(cred4);
+
+        UserAccount userAccount5 = UserAccount.builder()
+                .contactEmail("user13@mainl.ru")
                 .firstName("Oleg")
                 .lastName("Olegovich")
-                .username("Olegik88")
-                .passwordHash(passwordEncoder.encode("oleg11"))
+                .displayName("Olegik88")
                 .createdAt(ZonedDateTime.now())
                 .build();
 
-        List<User> savedUsers = userRepository.saveAll(List.of(user1, user2, user3, user4, user5));
-        log.info("Created {} users", savedUsers.size());
-        return savedUsers;
+        Credentials cred5 = Credentials.builder()
+                .userAccount(userAccount5)
+                .login(userAccount5.getContactEmail())
+                .passwordHash(passwordEncoder.encode("Oleg11rus!"))
+                .build();
+
+        userAccount5.setCredentials(cred5);
+
+        List<UserAccount> savedUserAccounts = userRepository.saveAll(List.of(userAccount1, userAccount2, userAccount3, userAccount4, userAccount5));
+        log.info("Created {} users", savedUserAccounts.size());
+        return savedUserAccounts;
     }
 
-    private List<Project> createProjects(List<User> users) {
+    private List<Project> createProjects(List<UserAccount> userAccounts) {
         log.debug("Creating projects...");
 
-        User viacheslav = findUserByUsername(users, "Rassel86rus");
-        User maria = findUserByUsername(users, "MaryDu99");
-        User petr = findUserByUsername(users, "Petrov11");
+        UserAccount viacheslav = findUserByUsername(userAccounts, "Rassel86rus");
+        UserAccount maria = findUserByUsername(userAccounts, "MaryDu99");
+        UserAccount petr = findUserByUsername(userAccounts, "Petrov11");
 
         Project personalProject = Project.builder()
                 .name("Personal tasks")
@@ -146,10 +182,10 @@ public class DataInitializer implements CommandLineRunner {
         return new HashSet<>(savedTagsList);
     }
 
-    private List<Task> createTasks(List<Project> projects, List<User> users) {
-        User viacheslav = findUserByUsername(users, "Rassel86rus");
-        User maria = findUserByUsername(users, "MeryDu99");
-        User petr = findUserByUsername(users, "Petrov11");
+    private List<Task> createTasks(List<Project> projects, List<UserAccount> userAccounts) {
+        UserAccount viacheslav = findUserByUsername(userAccounts, "Rassel86rus");
+        UserAccount maria = findUserByUsername(userAccounts, "MaryDu99");
+        UserAccount petr = findUserByUsername(userAccounts, "Petrov11");
 
         Project personalProject = findProjectByName(projects, "Personal tasks");
         Project teamProject = findProjectByName(projects, "Task Manager Development");
@@ -206,13 +242,13 @@ public class DataInitializer implements CommandLineRunner {
         return savedTasks;
     }
 
-    private void createComments(List<Task> tasks, List<User> users) {
+    private void createComments(List<Task> tasks, List<UserAccount> userAccounts) {
         log.debug("Creating comments...");
 
-        User viacheslav = findUserByUsername(users, "Rassel86rus");
-        User maria = findUserByUsername(users, "MeryDu99");
-        User petr = findUserByUsername(users, "Petrov11");
-        User oleg = findUserByUsername(users, "Olegik88");
+        UserAccount viacheslav = findUserByUsername(userAccounts, "Rassel86rus");
+        UserAccount maria = findUserByUsername(userAccounts, "MaryDu99");
+        UserAccount petr = findUserByUsername(userAccounts, "Petrov11");
+        UserAccount oleg = findUserByUsername(userAccounts, "Olegik88");
 
         Task apiTask = tasks.stream()
                 .filter(task -> task.getTitle().contains("API"))
@@ -253,12 +289,12 @@ public class DataInitializer implements CommandLineRunner {
         log.info("Created {} comments", savedComments.size());
     }
 
-    private User findUserByUsername(List<User> users, String username) {
-        return users.stream()
-                .filter(user -> user.getUsername().equals(username))
+    private UserAccount findUserByUsername(List<UserAccount> userAccounts, String username) {
+        return userAccounts.stream()
+                .filter(user -> user.getDisplayName().equals(username))
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException(
-                        String.format("User with username \"%s\" not found", username)));
+                        String.format("UserAccount with username \"%s\" not found", username)));
     }
 
     private Project findProjectByName(List<Project> projects, String name) {

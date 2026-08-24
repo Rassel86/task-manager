@@ -43,7 +43,7 @@
         <addForeignKeyConstraint baseTableName="tasks"
                                  baseColumnNames="author_id"
                                  constraintName="fk_tasks_owner"
-                                 referencedTableName="users"
+                                 referencedTableName="user_accounts"
                                  referencedColumnNames="id"
                                  onDelete="RESTRICT"
                                  onUpdate="CASCADE"/>
@@ -57,7 +57,7 @@
         <addForeignKeyConstraint baseTableName="tasks"
                                  baseColumnNames="assignee_id"
                                  constraintName="fk_tasks_assignee"
-                                 referencedTableName="users"
+                                 referencedTableName="user_accounts"
                                  referencedColumnNames="id"
                                  onDelete="SET NULL"
                                  onUpdate="CASCADE"/>

@@ -1,6 +1,7 @@
 package com.viacheslav.taskmanager.security.model;
 
-import com.viacheslav.taskmanager.model.User;
+import com.viacheslav.taskmanager.model.Credentials;
+import com.viacheslav.taskmanager.model.UserAccount;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,23 +14,23 @@ import java.util.UUID;
 
 @Getter
 @RequiredArgsConstructor
-public class CurrentUser implements UserDetails {
+public class CustomUserDetails implements UserDetails {
 
-    private final User user;
+    private final Credentials credentials;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(user.getRole().getAuthority()));
+        return List.of(new SimpleGrantedAuthority(credentials.getUserAccount().getRole().getAuthority()));
     }
 
     @Override
     public String getPassword() {
-        return user.getPasswordHash();
+        return credentials.getPasswordHash();
     }
 
     @Override
     public String getUsername() {
-        return user.getEmail();
+        return credentials.getLogin();
     }
 
     @Override
@@ -49,10 +50,14 @@ public class CurrentUser implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return user.isEnabled();
+        return credentials.isEnabled();
     }
 
     public UUID getId() {
-        return user.getId();
+        return credentials.getId();
+    }
+
+    public UserAccount getUserAccount() {
+        return credentials.getUserAccount();
     }
 }

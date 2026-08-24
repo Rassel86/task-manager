@@ -17,12 +17,14 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 @Slf4j
@@ -34,8 +36,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     private final UserDetailsService userDetailsService;
     private final AntPathMatcher pathMatcher = new AntPathMatcher();
     private static final List<String> PERMITTED_PATHS = Arrays.stream(PermittedEndpoint.values())
-                    .map(PermittedEndpoint::getPathPrefix)
-                    .toList();
+            .map(PermittedEndpoint::getPathPrefix)
+            .toList();
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
@@ -52,18 +54,22 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         String token = extractTokenFromRequest(request);
 
-        if (token != null && jwtService.isTokenValid(token)) {
-            String username = jwtService.extractUsername(token);
+        if (token == null || token.isEmpty()) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
-            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+        String login = jwtService.extractLogin(token);
 
-                if (username.equals(userDetails.getUsername())) {
-                    List<GrantedAuthority> authorities = (List<GrantedAuthority>) userDetails.getAuthorities();
-                    Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
-                    SecurityContextHolder.getContext().setAuthentication(authentication);
-                    log.debug("Authenticated user {} with authorities {}", LoggingUtils.maskUsername(username), authorities);
-                }
+        if (login != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            UserDetails userDetails = userDetailsService.loadUserByUsername(login);
+
+            if(jwtService.isTokenValid(token, userDetails)) {
+                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
+                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+                log.debug("Authenticated user {} with authorities {}", LoggingUtils.maskUsername(login), userDetails.getAuthorities());
             }
         }
 
@@ -71,10 +77,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     }
 
     private String extractTokenFromRequest(HttpServletRequest request) {
-        String bearerToken = request.getHeader("Authorization");
+        String authorizationHeader = request.getHeader("Authorization");
 
-        if (bearerToken != null && bearerToken.startsWith("Bearer")) {
-            return bearerToken.substring(7);
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer")) {
+            return authorizationHeader.substring(7);
         }
 
         return null;

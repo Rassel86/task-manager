@@ -48,7 +48,7 @@ public class LoggingFilter extends OncePerRequestFilter {
             }
         } catch (Exception e) {
             long duration = System.currentTimeMillis() - start;
-            log.error("Response: {} {} - ERROR after {} ms: {})", method, path, duration, e.getMessage());
+            log.error("Response: {} {} - ERROR after {} ms: {}", method, path, duration, e.getMessage());
             throw e;
         }
 

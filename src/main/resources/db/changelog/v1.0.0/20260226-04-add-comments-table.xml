@@ -41,7 +41,7 @@
         <addForeignKeyConstraint baseTableName="comments"
                                  baseColumnNames="author_id"
                                  constraintName="fk_comments_author"
-                                 referencedTableName="users"
+                                 referencedTableName="user_accounts"
                                  referencedColumnNames="id"
                                  onDelete="RESTRICT"
                                  onUpdate="CASCADE"/>

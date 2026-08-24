@@ -21,11 +21,11 @@ public record UserUpdateRequest(
         @Size(min = 3, max = 50, message = "Username must be between {min} and {max} characters")
         @Pattern(regexp = "^[a-zA-Z0-9._-]+$",
                 message = "Username can only contain: letters (a-z), numbers, dots (.), underscores (_) and hyphens (-)")
-        String username,
+        String displayName,
 
         @Size(max = 100, message = "Email is too long")
         @Email(regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\\\.[A-Za-z]{2,}$",
                 message = "Please provide a valid email address")
-        String email
+        String contactEmail
 ) {
 }

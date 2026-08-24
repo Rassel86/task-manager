@@ -1,7 +1,7 @@
 package com.viacheslav.taskmanager.mapper;
 
 import com.viacheslav.taskmanager.model.dto.auth.RegisterRequest;
-import com.viacheslav.taskmanager.model.dto.user.UserCreateRequest;
+import com.viacheslav.taskmanager.model.dto.user.UserCreateDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,7 +24,7 @@ public class AuthMapperTest {
     @BeforeEach
     void setUp() {
         registerRequest = RegisterRequest.builder()
-                .username("john_doe")
+                .displayName("john_doe")
                 .email("john@example.com")
                 .password("rawPassword123")
                 .confirmPassword("rawPassword123")
@@ -35,35 +35,15 @@ public class AuthMapperTest {
     @DisplayName("Should map all fields correctly")
     void toUserCreateRequest_ShouldMapAllFields() {
         // when
-        UserCreateRequest result = authMapper.toUserCreateRequest(registerRequest, encodedPassword);
+        UserCreateDto result = authMapper.toUserCreateRequest(registerRequest, encodedPassword);
 
         // then
         assertThat(result)
                 .isNotNull()
                 .satisfies(userCreateRequest -> {
-                    assertThat(userCreateRequest.username()).isEqualTo("john_doe");
+                    assertThat(userCreateRequest.displayName()).isEqualTo("john_doe");
                     assertThat(userCreateRequest.email()).isEqualTo("john@example.com");
                     assertThat(userCreateRequest.password()).isEqualTo(encodedPassword);
                 });
     }
-
-//    @Test
-//    @DisplayName("Testing AuthMapperImpl")
-//    void toUserCreateRequest_ShouldMapAllFields() {
-//        //given
-//        RegisterRequest registerRequest = RegisterRequest.builder()
-//                .username("rassel86")
-//                .email("john@example.com")
-//                .password("Password123!")
-//                .confirmPassword("Password123!")
-//                .build();
-//
-//        //when
-//        UserCreateRequest result = authMapper.toUserCreateRequest(registerRequest, );
-//
-//        //that
-//        assertEquals(result.username(), registerRequest.username(), "Username should match");
-//        assertEquals(result.email(), registerRequest.email(), "Email should match");
-//        assertEquals(result.password(), registerRequest.password(), "Password should match");
-//    }
 }

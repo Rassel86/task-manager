@@ -1,13 +1,13 @@
 package com.viacheslav.taskmanager.service;
 
-import com.viacheslav.taskmanager.model.User;
+import com.viacheslav.taskmanager.model.UserAccount;
 import com.viacheslav.taskmanager.model.dto.PageResponse;
 import com.viacheslav.taskmanager.model.dto.auth.ChangePasswordRequest;
 import com.viacheslav.taskmanager.model.dto.user.*;
 
 import java.util.UUID;
 
-public interface UserService {
+public interface UserAccountService {
 
     UserResponse getUserById(UUID id);
 
@@ -15,21 +15,21 @@ public interface UserService {
 
     UserResponse updateUserByAdmin(UUID id, UserUpdateByAdminRequest request);
 
-    UserResponse updateUser(User user, UserUpdateRequest request);
+    UserResponse updateUser(UserAccount userAccount, UserUpdateRequest request);
 
     void deleteUser(UUID id);
 
     void deleteUserByAdmin(UUID id);
 
-    void changePassword(User user, ChangePasswordRequest request);
+    void changePassword(UserAccount userAccount, ChangePasswordRequest request);
 
-    UserResponse createRegisteredUser(UserCreateRequest request);
+    UserResponse createUserAccount(UserCreateDto request);
 
-    User findByUsernameOrEmail(String usernameOrEmail);
+    UserAccount findByUsernameOrEmail(String usernameOrEmail);
 
     UserResponse getByEmail(String email);
 
-    UserResponse createUserByAdmin(UserCreateRequest request);
+    UserResponse createUserByAdmin(UserCreateDto request);
 
     void resetPasswordByAdmin(UUID id, String newPassword);
 
