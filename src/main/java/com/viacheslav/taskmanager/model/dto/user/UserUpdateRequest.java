@@ -1,10 +1,12 @@
 package com.viacheslav.taskmanager.model.dto.user;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Builder
 public record UserUpdateRequest(
 
@@ -26,6 +28,24 @@ public record UserUpdateRequest(
         @Size(max = 100, message = "Email is too long")
         @Email(regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\\\.[A-Za-z]{2,}$",
                 message = "Please provide a valid email address")
-        String contactEmail
+        String contactEmail,
+
+        @Size(max = 20, message = "Phone number must not exceed 20 characters")
+        @Pattern(regexp = "^\\+?[0-9\\s\\-()]{7,20}$",
+                message = "Invalid phone number format. Use: +1234567890")
+        String phoneNumber,
+
+        @Size(max = 100, message = "Company name must not exceed 100 characters")
+        @Pattern(regexp = "^[a-zA-Zа-яА-Я0-9\\s\\-&.,'()]+$",
+                message = "Company name contains invalid characters")
+        String company,
+
+        @Size(max = 100, message = "Job title must not exceed 100 characters")
+        @Pattern(regexp = "^[a-zA-Zа-яА-Я0-9\\s\\-&.,'()/+]+$",
+                message = "Job title contains invalid characters")
+        String jobTitle,
+
+        @Size(max = 500, message = "Bio must not exceed 500 characters")
+        String bio
 ) {
 }

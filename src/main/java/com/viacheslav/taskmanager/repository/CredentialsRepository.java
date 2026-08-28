@@ -9,7 +9,10 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface CredentialsRepository extends JpaRepository<Credentials, UUID> {
-    @Query("SELECT c FROM Credentials c JOIN fetch c.userAccount where c.login = :login")
-    Optional<Credentials> findByLogin(@Param("login") String login);
+    @Query("SELECT c FROM Credentials c " +
+           "JOIN fetch c.userAccount " +
+           "where c.login = :login")
+    Optional<Credentials> findByLoginWithUserAccount(@Param("login") String login);
+
     boolean existsByLogin(String login);
 }

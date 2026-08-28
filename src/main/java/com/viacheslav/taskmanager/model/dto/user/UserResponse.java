@@ -14,6 +14,8 @@ public record UserResponse(
         String displayName,
         String contactEmail,
         String avatarUrl,
+        String company,
+        String jobTitle,
         String role,
         String bio,
         String phoneNumber,

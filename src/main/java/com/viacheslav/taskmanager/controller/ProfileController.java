@@ -27,32 +27,32 @@ public class ProfileController {
     private final UserAccountService userAccountService;
 
     @GetMapping
-    public ResponseEntity<UserResponse> getMyProfile(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
-        UserResponse response = userAccountService.getByEmail(customUserDetails.getUsername());
+    public ResponseEntity<UserResponse> getOwnProfile(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        UserResponse response = userAccountService.getUserAccountById(customUserDetails.getUserId());
         return ResponseEntity.ok(response);
-    }
-
-    @PostMapping("/change-password")
-    public ResponseEntity<SuccessResponse> changePassword(@AuthenticationPrincipal CustomUserDetails customUserDetails,
-                                                          @Valid @RequestBody ChangePasswordRequest request) {
-        userAccountService.changePassword(customUserDetails.getCredentials().getUserAccount(), request);
-        return ResponseEntity.ok(SuccessResponse.builder()
-                .message("Password changed successfully")
-                .timestamp(LocalDateTime.now())
-                .build());
     }
 
     @PutMapping
     public ResponseEntity<UserResponse> updateProfile(@AuthenticationPrincipal CustomUserDetails customUserDetails,
                                                       @Valid @RequestBody UserUpdateRequest request) {
-        UserResponse response = userAccountService.updateUser(customUserDetails.getCredentials().getUserAccount(), request);
+        UserResponse response = userAccountService.updateUserAccount(customUserDetails.getUserId(), request);
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteProfile(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
-        UUID userId = customUserDetails.getId();
-        userAccountService.deleteUser(userId);
+        UUID userId = customUserDetails.getUserId();
+        userAccountService.deleteUserAccount(userId);
+    }
+
+    @PostMapping("/change-password")
+    public ResponseEntity<SuccessResponse> changePassword(@AuthenticationPrincipal CustomUserDetails customUserDetails,
+                                                          @Valid @RequestBody ChangePasswordRequest request) {
+        userAccountService.changePassword(customUserDetails.getUserId(), request);
+        return ResponseEntity.ok(SuccessResponse.builder()
+                .message("Password changed successfully")
+                .timestamp(LocalDateTime.now())
+                .build());
     }
 }

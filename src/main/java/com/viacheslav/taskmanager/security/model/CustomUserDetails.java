@@ -53,11 +53,11 @@ public class CustomUserDetails implements UserDetails {
         return credentials.isEnabled();
     }
 
-    public UUID getId() {
-        return credentials.getId();
-    }
-
     public UserAccount getUserAccount() {
         return credentials.getUserAccount();
+    }
+
+    public UUID getUserId() {
+        return credentials.getUserAccount().getId();
     }
 }
