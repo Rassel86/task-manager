@@ -2,7 +2,6 @@ package com.viacheslav.taskmanager.controller;
 
 import com.viacheslav.taskmanager.model.dto.auth.*;
 import com.viacheslav.taskmanager.model.dto.user.UserResponse;
-import com.viacheslav.taskmanager.exception.InvalidTokenException;
 import com.viacheslav.taskmanager.security.service.RefreshTokenService;
 import com.viacheslav.taskmanager.service.AuthService;
 import jakarta.servlet.http.Cookie;
@@ -21,7 +20,6 @@ import java.time.LocalDateTime;
 import java.util.Map;
 
 @Slf4j
-@CrossOrigin(origins = {"http://127.0.0.1:5500", "http://localhost:5173"}, allowCredentials = "true")
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor

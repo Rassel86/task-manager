@@ -29,7 +29,7 @@ public record UserCreateDto(
         @Size(max = 100, message = "Email is too long")
         @Email(regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\\\.[A-Za-z]{2,}$",
                 message = "Please provide a valid email address")
-        String email,
+        String contactEmail,
 
         @NotBlank
         String password

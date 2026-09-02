@@ -13,7 +13,7 @@ public record UserResponse(
         String lastName,
         String displayName,
         String contactEmail,
-        String avatarUrl,
+        String avatarKey,
         String company,
         String jobTitle,
         String role,

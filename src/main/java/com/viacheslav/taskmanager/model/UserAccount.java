@@ -61,8 +61,8 @@ public class UserAccount {
     @Column(name = "bio", length = 500)
     private String bio;
 
-    @Column(name = "avatar_url")
-    private String avatarUrl;
+    @Column(name = "avatar_key")
+    private String avatarKey;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     @CreatedDate

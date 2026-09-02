@@ -27,6 +27,7 @@ public class LoggingFilter extends OncePerRequestFilter {
 
         if (!path.startsWith("/api")) {
             filterChain.doFilter(request, response);
+            return;
         }
 
         long start = System.currentTimeMillis();

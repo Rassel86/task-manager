@@ -52,7 +52,7 @@ public class AuthServiceImpl implements AuthService {
 
         UserCreateDto createRequest = UserCreateDto.builder()
                 .displayName(request.displayName())
-                .email(request.email())
+                .contactEmail(request.email())
                 .password(encodedPassword)
                 .build();
 

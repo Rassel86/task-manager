@@ -8,6 +8,7 @@ import com.viacheslav.taskmanager.model.dto.auth.ChangePasswordRequest;
 import com.viacheslav.taskmanager.model.dto.user.*;
 import com.viacheslav.taskmanager.repository.CredentialsRepository;
 import com.viacheslav.taskmanager.repository.UserAccountRepository;
+import com.viacheslav.taskmanager.service.FileStorageService;
 import com.viacheslav.taskmanager.service.UserAccountService;
 import com.viacheslav.taskmanager.util.LoggingUtils;
 import lombok.RequiredArgsConstructor;
@@ -32,17 +33,17 @@ public class UserAccountServiceImpl implements UserAccountService {
     @Override
     @Transactional
     public UserResponse createUserAccount(UserCreateDto request) {
-        log.info("Create userAccount via registration: {}", LoggingUtils.maskEmail(request.email()));
+        log.info("Create userAccount via registration: {}", LoggingUtils.maskEmail(request.contactEmail()));
         validateUniqueUsername(request.displayName());
-        validateUniqueEmail(request.email());
+        validateUniqueEmail(request.contactEmail());
 
         UserAccount account = UserAccount.builder()
                 .displayName(request.displayName())
-                .contactEmail(request.email())
+                .contactEmail(request.contactEmail())
                 .build();
 
         Credentials credentials = Credentials.builder()
-                .login(request.email())
+                .login(request.contactEmail())
                 .passwordHash(request.password())
                 .userAccount(account)
                 .build();
@@ -57,6 +58,8 @@ public class UserAccountServiceImpl implements UserAccountService {
     @Override
     @Transactional
     public UserResponse updateUserAccount(UUID userAccountId, UserUpdateRequest request) {
+        validateUniqueUsername(request.displayName());
+        validateUniqueEmail(request.contactEmail());
         UserAccount userAccount = getUserAccountEntityById(userAccountId);
         log.info("Updating userAccount: {} ({})", LoggingUtils.maskEmail(userAccount.getContactEmail()), userAccountId);
         userMapper.updateUserAccountFromDto(request, userAccount);

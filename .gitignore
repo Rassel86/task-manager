@@ -118,3 +118,7 @@ logs/
 /data
 .DS_Store
 *.DS_Store
+
+# MinIO data
+minio_data/
+*.minio.sys/
