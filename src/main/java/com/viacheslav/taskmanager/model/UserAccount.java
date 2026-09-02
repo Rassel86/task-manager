@@ -3,6 +3,7 @@ package com.viacheslav.taskmanager.model;
 import com.viacheslav.taskmanager.model.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
+@DynamicUpdate
 @Table(name = "user_accounts")
 @EntityListeners(AuditingEntityListener.class)
 @Getter
@@ -25,8 +27,6 @@ public class UserAccount {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-
-    //business-fields
 
     @Column(name = "first_name", length = 50)
     private String firstName;
@@ -49,17 +49,20 @@ public class UserAccount {
     @Column(name = "contact_email", unique = true, nullable = false, length = 100)
     private String contactEmail;
 
-    @Column(length = 500)
-    private String bio;
-
-    @Column(name = "avatar_url")
-    private String avatarUrl;
-
     @Column(name = "phone_number", length = 20)
     private String phoneNumber;
 
-    @Column(name = "timezone")
-    private String timezone;
+    @Column(name = "company", length = 100)
+    private String company;
+
+    @Column(name = "job_title", length = 100)
+    private String jobTitle;
+
+    @Column(name = "bio", length = 500)
+    private String bio;
+
+    @Column(name = "avatar_key")
+    private String avatarKey;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     @CreatedDate
@@ -68,8 +71,6 @@ public class UserAccount {
     @Column(name = "updated_at")
     @LastModifiedDate
     private ZonedDateTime updatedAt;
-
-    //Relations with Entities
 
     @OneToOne(cascade = CascadeType.ALL,
             orphanRemoval = true,

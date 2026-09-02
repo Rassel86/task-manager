@@ -14,9 +14,6 @@ public interface UserAccountRepository extends JpaRepository<UserAccount, UUID>,
     @Query("SELECT CASE WHEN COUNT(u) > 0 THEN true ELSE false END FROM UserAccount u WHERE LOWER(u.displayName) = LOWER(:username)")
     boolean existsByUsernameIgnoreCase(@Param("username") String username);
 
-    @Query("SELECT CASE WHEN COUNT(u) > 0 THEN true ELSE false END FROM UserAccount u WHERE LOWER(u.contactEmail) = LOWER(:email)")
-    boolean existsByEmailIgnoreCase(@Param("email") String email);
-
     @Query("SELECT u FROM UserAccount u WHERE LOWER(u.contactEmail) = lower(:email) ")
     Optional<UserAccount> findByEmailIgnoreCase(@Param("email") String email);
 

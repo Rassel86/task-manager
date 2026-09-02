@@ -26,6 +26,7 @@
 		<mapstruct-processor.version>1.6.3</mapstruct-processor.version>
 		<jjwt.version>0.12.6</jjwt.version>
 		<commons-codec.version>1.22.1</commons-codec.version>
+		<awssdk.version>2.38.1</awssdk.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -111,6 +112,11 @@
 			<artifactId>commons-codec</artifactId>
 			<version>${commons-codec.version}</version>
 			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>software.amazon.awssdk</groupId>
+			<artifactId>s3</artifactId>
+			<version>${awssdk.version}</version>
 		</dependency>
 	</dependencies>
 

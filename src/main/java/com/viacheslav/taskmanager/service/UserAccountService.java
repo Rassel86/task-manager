@@ -1,39 +1,21 @@
 package com.viacheslav.taskmanager.service;
 
-import com.viacheslav.taskmanager.model.UserAccount;
-import com.viacheslav.taskmanager.model.dto.PageResponse;
 import com.viacheslav.taskmanager.model.dto.auth.ChangePasswordRequest;
-import com.viacheslav.taskmanager.model.dto.user.*;
+import com.viacheslav.taskmanager.model.dto.user.UserCreateDto;
+import com.viacheslav.taskmanager.model.dto.user.UserResponse;
+import com.viacheslav.taskmanager.model.dto.user.UserUpdateRequest;
 
 import java.util.UUID;
 
 public interface UserAccountService {
 
-    UserResponse getUserById(UUID id);
-
-    PageResponse<UserResponse> getUsersPage(UserFilterRequest filter);
-
-    UserResponse updateUserByAdmin(UUID id, UserUpdateByAdminRequest request);
-
-    UserResponse updateUser(UserAccount userAccount, UserUpdateRequest request);
-
-    void deleteUser(UUID id);
-
-    void deleteUserByAdmin(UUID id);
-
-    void changePassword(UserAccount userAccount, ChangePasswordRequest request);
+    UserResponse getUserAccountById(UUID id);
 
     UserResponse createUserAccount(UserCreateDto request);
 
-    UserAccount findByUsernameOrEmail(String usernameOrEmail);
+    UserResponse updateUserAccount(UUID userAccountId, UserUpdateRequest request);
 
-    UserResponse getByEmail(String email);
+    void deleteUserAccount(UUID userAccountId);
 
-    UserResponse createUserByAdmin(UserCreateDto request);
-
-    void resetPasswordByAdmin(UUID id, String newPassword);
-
-    void blockUser(UUID id);
-
-    void unblockUser(UUID id);
+    void changePassword(UUID userAccountId, ChangePasswordRequest request);
 }
