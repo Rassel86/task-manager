@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.Duration;
 import java.util.List;
 import java.util.UUID;
 
@@ -57,12 +56,15 @@ public class AvatarServiceImpl implements AvatarService {
         if (account.getAvatarKey() != null) {
             fileStorageService.deleteFile(AVATAR_BUCKET, account.getAvatarKey());
         }
+
+        account.setAvatarKey(null);
+        userAccountRepository.save(account);
     }
 
     @Override
     public String getAvatarUrl(UUID userAccountId) {
         UserAccount account = getUserAccountEntityById(userAccountId);
-        return fileStorageService.getTemporaryUrl(AVATAR_BUCKET, account.getAvatarKey(), Duration.ofDays(7));
+        return fileStorageService.getUrl(AVATAR_BUCKET, account.getAvatarKey());
     }
 
     private UserAccount getUserAccountEntityById(UUID userId) {
