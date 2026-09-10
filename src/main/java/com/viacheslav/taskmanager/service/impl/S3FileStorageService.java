@@ -9,6 +9,7 @@ import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
+import software.amazon.awssdk.services.s3.model.GetUrlRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignRequest;
@@ -45,7 +46,7 @@ public class S3FileStorageService implements FileStorageService {
             throw new RuntimeException("Failed to upload avatar", e);
         }
 
-        return getTemporaryUrl(bucket, objectKey, Duration.ofDays(7));
+        return getUrl(bucket, objectKey);
     }
 
     @Override
@@ -65,6 +66,16 @@ public class S3FileStorageService implements FileStorageService {
         } catch (Exception e) {
             log.warn("Failed to delete avatar: {}", e.getMessage());
         }
+    }
+
+    @Override
+    public String getUrl(String bucket, String objectKey) {
+        return s3Client.utilities()
+                .getUrl(GetUrlRequest.builder()
+                        .bucket(bucket)
+                        .key(objectKey)
+                        .build())
+                .toString();
     }
 
     @Override
